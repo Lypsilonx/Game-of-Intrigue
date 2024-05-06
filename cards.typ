@@ -26,7 +26,6 @@
 #let card_height = 3.5in
 
 #let render_card(type, value: none, illegal: false, color: none) = {
-  v(0em, weak: true)
   box(
     width: card_width,
     height: card_height,
@@ -42,24 +41,22 @@
         stroke: 0.3em + if color == none { black } else { color },
         inset: 0.5em
       )[
-
-
         // Symbol
         #if (symbols.keys().contains(type) and symbols.at(type) != none) {
           let symbol = image.decode(read("icons/" + symbols.at(type))
           .replace("rgb(0,0,0)", if color == none { gray.to-hex() } else { "rgb(0,0,0)" })
-          .replace("rgb(254,255,254)", if color == none { black } else { color }.to-hex()), width: 2em, height: 1em)
+          .replace("rgb(254,255,254)", if color == none { black } else { color }.to-hex()), width: 2.5em, height: 2.5em)
 
           place(
             top + left,
-            dy: 0.15em
+            dy: -0.2em
           )[
             #symbol
           ]
           
           place(
             bottom + right,
-            dy: -0.15em
+            dy: 0.2em
           )[
             #rotate(180deg)[
               #symbol
@@ -68,7 +65,7 @@
           
           place(
             center + horizon,
-            dy: -2em
+            dy: -1.5em
           )[
             #scale(origin: center + horizon, x: 500%, y: 500%)[
               #rotate(0deg)[
@@ -79,11 +76,11 @@
         }
 
         // Illegal
-        #let skew_angle = 12deg
+        #let skew_angle = 6deg
         #place(
           center + horizon,
-          dx: -1.5em,
-          dy: 2em
+          dx: -0em,
+          dy: 2.2em
         )[
           #skew(-skew_angle)[
             #rotate(-skew_angle, reflow: true)[
@@ -94,16 +91,16 @@
                 )[
                   #box(
                     width: 100%,
-                    height: 0.6em,
+                    height: 1em,
                     fill: white
                   )[
                     #box(
                       width: 100%,
-                      height: 0.5em,
+                      height: 0.8em,
                       fill: red
                     )[
                       #text(
-                        size: 0.2em,
+                        size: 0.35em,
                         fill: white
                       )[
                         #repeat("ILLEGAL")
@@ -120,10 +117,10 @@
         #if (value != none) {
           place(
             top + right,
-            dy: 0.15em
+            dy: 0.2em
           )[
             #text(
-              size: 1.5em,
+              size: 2em,
               weight: "bold",
             )[
               #value
@@ -132,11 +129,11 @@
           
           place(
             bottom + left,
-            dy: -0.15em
+            dy: -0.2em
           )[
             #rotate(180deg)[
               #text(
-                size: 1.5em,
+                size: 2em,
                 weight: "bold",
               )[
                 #value

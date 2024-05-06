@@ -30,7 +30,7 @@
   "Asset": "Worth [X]",
   "Influence": "Must be accepted in a trade.",
   "Favour": "Announce to force the [C] player to trade with you.",
-  "Hook": "Announce to force the [C] player to vote for the same person as you.",
+  "Hook": "Announce to force the [C] player to vote like you.",
   "Threat": "Announce to force the [C] player not vote.",
   "Secret": "Announce to make the [C] player loose 1 Standing.",
   "Testimony": "When announced you are immune to social cards with less or equal value."
