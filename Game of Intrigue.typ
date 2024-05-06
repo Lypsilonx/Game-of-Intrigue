@@ -97,6 +97,21 @@
   link(<setup>, it)
 }
 
+#show regex("Visible on back"): it => {
+  set text(weight: "bold")
+  link(<visible_on_back>, it)
+}
+
+#show regex("pay a fine"): it => {
+  set text(weight: "bold")
+  link(<fine>, it)
+}
+
+#show regex("announced"): it => {
+  set text(weight: "bold")
+  link(<announcement>, it)
+}
+
 #show regex("remove.*from the game"): it => {
   set text(weight: "bold")
   link(<removed_from_game>, it)
@@ -188,15 +203,15 @@ If only two players are left the player with the most combined card value
 - You cannot deny to trade for this card (except if you offered a Pact)
 == Social <social>
 *_(C, I?, 7-9X)_*
-- Can be a *Secret, Hook, Threat or Favour*
+- Can be a Secret, Hook, Threat or Favour
 - Can be announced to make the player with that Color…
-  - *Favour*: Trade with you now
+  - Favour: Trade with you now
     - Follow the steps in the Trade phase
-  - *Hook*: Vote for the same person as you
+  - Hook: Vote for the same person as you
     - If two of the same Color are played the player can decide between those players
       votes
-  - *Threat*: Not vote
-  - *Secret*: Loose 1 Standing
+  - Threat: Not vote
+  - Secret: Loose 1 Standing
 == Testimony <testimony>
 *_(I?, 7-9X)_*
 - When Announced you are immune to social cards with less or equal value this
@@ -204,12 +219,12 @@ If only two players are left the player with the most combined card value
 
 = Card properties <card_properties>
 == Illegal (I) <illegal>
-- #link(<visible_on_back> ,"Visible on back")
+- Visible on back
 == Colored (C) <colored>
 - Belongs to a specific player
 == Value (X) <value>
 - A Number from 0-10
-- #link(<visible_on_back> ,"Visible on back")
+- Visible on back
 
 = Card amounts <card_amounts>
 
@@ -246,7 +261,7 @@ If only two players are left the player with the most combined card value
 = Vocabulary <vocabulary>
 == Legality check <legality_check>
 1. If any traded card is illegal:
-  1. Anyone who agreed to the trade in 2.3. will have to #link(<fine>,"pay a fine") of the combined
+  1. Anyone who agreed to the trade in 2.3. will have to pay a fine of the combined
     value of all the illegal cards offered to the accuser
   2. If any illegal Pact was found to be offered remove them from the game (do not
     put them on the discard pile)

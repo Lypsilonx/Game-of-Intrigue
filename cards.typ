@@ -24,6 +24,7 @@
 
 #let card_width = 2.5in
 #let card_height = 3.5in
+#let skew_angle = 6deg
 
 #let render_card(type, value: none, illegal: false, color: none) = {
   box(
@@ -76,7 +77,6 @@
         }
 
         // Illegal
-        #let skew_angle = 6deg
         #place(
           center + horizon,
           dx: -0em,
@@ -187,38 +187,143 @@
   ]
 }
 
+#let render_card_back(value: none, illegal: false) = {
+  box(
+    width: card_width,
+    height: card_height,
+    stroke: (thickness: 0.1pt, dash: "dashed"),
+    radius: 3.5mm,
+    clip: true,
+  )[
+    #align(center + horizon)[
+      #box(
+        width: 100% - 1em,
+        height: 100% - 1em,
+        radius: 3mm,
+        stroke: 0.3em + black,
+        inset: (left: 0.5em, right: 0.5em, top: -0.5em, bottom: -0.5em),
+        clip: true
+      )[
+        // Illegal
+        #place(
+          center + horizon,
+          dx: -1.2em,
+        )[
+          #v(-0.8em)
+          #rotate(-skew_angle)[
+            #skew(-skew_angle)[
+              #text(
+                weight: "extrabold",
+                size: 0.358em
+              )[
+                #set align(center + top)
+                #let secret_gradient = gradient.linear(..colors, angle: 45deg, relative: "parent")
+                #v(2.5em)
+                #text(font: "Monaco", fill: secret_gradient)[
+                  #repeat("GAME OF INTRIGUE")
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME OF")
+                  #repeat("GAME OF INTRIGUE")
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME " + if (value == none) {"OF"} else { if (value < 10) {"0"} + str(value)})
+                  #repeat("GAME OF INTRIGUE")
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME OF")
+                  #repeat("GAME OF INTRIGUE")
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME OF")
+                ]
+                #v(2em, weak: true)
+                #text(
+                  weight: "extrabold",
+                  size: 5em
+                )[
+                  GAME
+                  #text(
+                    weight: "bold",
+                    size: 0.8em
+                  )[
+                    #h(-0.2em)
+                    of
+                  ]
+                  INTRIGUE
+                ]
+                #v(2em, weak: true)
+                #text(font: "Monaco", fill: secret_gradient)[
+                  #repeat("GAME OF INTRIGUE")
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME OF")
+                  #repeat(if (illegal) {"GAME OF ILLEGALE"} else {"GAME OF INLEGALE"})
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME OF")
+                  #repeat("GAME OF INTRIGUE")
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME OF")
+                  #repeat("GAME OF INTRIGUE")
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME OF")
+                  #repeat("GAME OF INTRIGUE")
+                  #repeat("OF INTRIGUE GAME")
+                  #repeat("INTRIGUE GAME OF")
+                ]
+              ]
+            ]
+          ]
+        ]
+      ]
+    ]
+  ]
+}
+
 
 // Cards
 #let cards = ()
+#let card_backs = ()
 #for color in colors {
   for _ in range(standing_card_amount) {
     cards.push(render_card("Standing", value: 10))
+    card_backs.push(render_card_back(value: 10))
   }
 }
 #for color in colors {
   cards.push(render_card("Token", color: color))
+  card_backs.push(render_card_back())
   cards.push(render_card("Pact", color: color))
+  card_backs.push(render_card_back())
   for _ in range(player_count - 3) {
     cards.push(render_card("Pact", color: color, illegal: true))
+    card_backs.push(render_card_back(illegal: true))
   }
   cards.push(render_card("Favour", value: 8, color: color))
+  card_backs.push(render_card_back())
   cards.push(render_card("Favour", value: 9, color: color, illegal: true))
+  card_backs.push(render_card_back(illegal: true))
   cards.push(render_card("Hook", value: 7, color: color, illegal: true))
+  card_backs.push(render_card_back(illegal: true))
   cards.push(render_card("Hook", value: 8, color: color, illegal: true))
+  card_backs.push(render_card_back(illegal: true))
   cards.push(render_card("Threat", value: 7, color: color, illegal: true))
+  card_backs.push(render_card_back(illegal: true))
   cards.push(render_card("Threat", value: 8, color: color, illegal: true))
+  card_backs.push(render_card_back(illegal: true))
   cards.push(render_card("Secret", value: 7, color: color))
+  card_backs.push(render_card_back())
   cards.push(render_card("Secret", value: 9, color: color, illegal: true))
+  card_backs.push(render_card_back(illegal: true))
 }
 #for i in range(asset_copy_amount * 9) {
   cards.push(render_card("Asset", value: calc.rem(i, 9) + 1))
+  card_backs.push(render_card_back(value: calc.rem(i, 9) + 1))
   cards.push(render_card("Asset", value: calc.rem(i, 9) + 1, illegal: true))
+  card_backs.push(render_card_back(value: calc.rem(i, 9) + 1, illegal: true))
 }
 #for i in range(influence_copy_amount * 4) {
   cards.push(render_card("Influence", value: calc.rem(i, 4) + 2))
+  card_backs.push(render_card_back(value: calc.rem(i, 4) + 2))
 }
 #for i in range(testimony_copy_amount * 3) {
   cards.push(render_card("Testimony", value: calc.rem(i, 3) + 7))
+  card_backs.push(render_card_back(value: calc.rem(i, 3) + 7))
 }
 
 // Render
@@ -236,3 +341,5 @@
 
 #set align(center + horizon)
 #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..cards)
+#pagebreak()
+#grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..card_backs)
