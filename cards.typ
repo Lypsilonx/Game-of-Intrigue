@@ -26,11 +26,12 @@
 #let card_height = 3.5in
 #let skew_angle = 6deg
 
-#let render_card(type, value: none, illegal: false, color: none) = {
+#let render_card(type, value: none, illegal: false, color: none, cut_guide: true) = {
+  set text(font: "Proxima Nova", weight: "medium")
   box(
     width: card_width,
     height: card_height,
-    stroke: (thickness: 0.1pt, dash: "dashed"),
+    stroke: if cut_guide {(thickness: 0.1pt, dash: "dashed")} else {none},
     radius: 3.5mm,
     clip: true,
   )[
@@ -187,11 +188,12 @@
   ]
 }
 
-#let render_card_back(value: none, illegal: false) = {
+#let render_card_back(value: none, illegal: false, cut_guide: true) = {
+  set text(font: "Proxima Nova", weight: "medium")
   box(
     width: card_width,
     height: card_height,
-    stroke: (thickness: 0.1pt, dash: "dashed"),
+    stroke: if cut_guide {(thickness: 0.1pt, dash: "dashed")} else {none},
     radius: 3.5mm,
     clip: true,
   )[
@@ -336,8 +338,6 @@
   // height: (card_height + cut_gutter) * cards_on_page.at(1) + cut_gutter,
   margin: 0%,
 )
-
-#set text(font: "Proxima Nova", weight: "medium")
 
 #set align(center + horizon)
 #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..cards)

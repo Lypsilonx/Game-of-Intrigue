@@ -1,4 +1,5 @@
 #import "data.typ": *
+#import "cards.typ": *
 
 #show heading.where(level: 1): it => {
   if it.level == 1 {
@@ -275,8 +276,63 @@ You have to give a card of at least the value X to another player. If you cannot
 pay, you have to discard a Standing
 
 == Visible on Back <visible_on_back>
-- (Invisible ink marker on the back?)
-- (Hard to see lines/patterns that can be decoded with tool?)
+- The small text on the back of the card contains the card's value and if it is illegal
+
+#grid(
+  columns: 2,
+  align: center,
+  column-gutter: 2em,
+  row-gutter: 0.5em,
+  [
+    #place(
+      dx: 3.85em,
+      dy: 4.05em,
+    )[
+      #rotate(-skew_angle)[
+        #skew(-skew_angle)[
+          #rect(stroke: 0.1em + red, width: 0.7em, height: 0.7em)
+        ]
+      ]
+    ]
+    #place(
+      dx: 6.17em,
+      dy: 15.37em,
+    )[
+      #rotate(-skew_angle)[
+        #skew(-skew_angle)[
+          #rect(stroke: 0.1em + red, width: 2em, height: 0.7em)
+        ]
+      ]
+    ]
+    #render_card_back(value: 99, illegal: true, cut_guide: false)
+  ],
+  [
+    #place(
+      dx: 3.85em,
+      dy: 4.05em,
+    )[
+      #rotate(-skew_angle)[
+        #skew(-skew_angle)[
+          #rect(stroke: 0.1em + red, width: 0.7em, height: 0.7em)
+        ]
+      ]
+    ]
+    #place(
+      dx: 6.17em,
+      dy: 15.37em,
+    )[
+      #rotate(-skew_angle)[
+        #skew(-skew_angle)[
+          #rect(stroke: 0.1em + red, width: 2em, height: 0.7em)
+        ]
+      ]
+    ]
+    #render_card_back(cut_guide: false)
+  ],
+  [Value: 99, Illegal],
+  [No Value, Legal]
+)
+
 
 == Removed from the game <removed_from_game>
 - Put them back in the box
