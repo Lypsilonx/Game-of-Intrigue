@@ -136,31 +136,35 @@
 
                 #show regex("Social( card(s?))"): it => {
                   set text(weight: "extrabold")
-                  [#icon("Social")#it]
+                  [ #icon("Social")#it]
                 }
                 #show regex("Standing(s?)( card(s?)?)?"): it => {
                   set text(weight: "extrabold")
-                  [#icon("Standing")#it]
+                  [ #icon("Standing")#it]
                 }
                 #show regex("Pact(s?)( card(s?)?)?"): it => {
                   set text(weight: "extrabold")
-                  [#icon("Pact")#it]
+                  [ #icon("Pact")#it]
                 }
                 #show regex("Asset(s?)( card(s?)?)?"): it => {
                   set text(weight: "extrabold")
-                  [#icon("Asset")#it]
+                  [ #icon("Asset")#it]
                 }
                 #show regex("Influence(s?)( card(s?)?)?"): it => {
                   set text(weight: "extrabold")
-                  [#icon("Influence")#it]
+                  [ #icon("Influence")#it]
                 }
                 #show regex("Testimony(s?)( card(s?)?)?"): it => {
                   set text(weight: "extrabold")
-                  [#icon("Testimony")#it]
+                  [ #icon("Testimony")#it]
                 }
                 #show regex("Role(s?)( card(s?)?)?"): it => {
                   set text(weight: "extrabold")
-                  [#icon("Role")#it]
+                  [ #icon("Role")#it]
+                }
+                #show regex("Color( Token)?"): it => {
+                  set text(weight: "extrabold")
+                  [ #icon("Token")#it]
                 }
                 #show regex("illegal((ly)|( card(s?)))?"): it => {
                   set text(weight: "bold", fill: white)

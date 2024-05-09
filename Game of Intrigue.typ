@@ -19,6 +19,7 @@
   strong(it)
 }
 
+#set text(font: "Proxima Nova")
 #set page(
   "a5",
   footer: [
@@ -31,12 +32,20 @@
               place(left, counter(page).display("1"));
             }
           place(center, [Game of Intrigue])
+        } else {
+          set text(fill: white)
+          place(
+            center,
+            [
+              Game of Intrigue - Version #version\
+              Lyx Rothböck 2024\
+            ]
+          )
         }
       }
     )
   ]
 )
-#set text(font: "Proxima Nova")
 
 #show regex("Standing( card(s)?)?"): it => {
   set text(weight: "bold")
@@ -212,7 +221,8 @@
 #pagebreak()
 #text(size: 3em, weight: "bold")[
   Game of Intrigue
-]
+]\
+Version #version
 #outline(title: "Chapters", indent: auto)
 
 #pagebreak()
@@ -320,18 +330,17 @@ Roles come in two types:
 - *Goal*: You win if you fulfill a specific condition
 - *Perk*: You get a special ability
 
-= Card properties <card_properties>
-== Illegal (I) <illegal>
+== Properties <properties>
+=== Illegal (I) <illegal>
 - Relevant during legality checks in the Trade phase
 - Visible on back
-== Colored (C) <colored>
+=== Colored (C) <colored>
 - Belongs to a specific player
-== Value (X) <value>
+=== Value (X) <value>
 - A Number from 0-10 (0 is not shown on the card)
 - Visible on back
 
-= Card amounts <card_amounts>
-#linebreak()
+== Material <material>
 #grid(
   columns: 2,
   gutter: 1em,

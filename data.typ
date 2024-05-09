@@ -1,3 +1,5 @@
+#let version = "0.2.1"
+
 #let colors = (
   red,
   orange,
@@ -43,17 +45,17 @@
 
 #let role_descriptions = (
   "Millionaire": "[Goal]Hold cards worth more or equal to " + str(hand_card_amount * 6) + ". (excluding Standing)",
-  "Mafioso": "[Goal]Hold more or equal to " + str(hand_card_amount + 1) + " illegal cards, but only illegal cards. (excluding Standing and cards of your color)",
+  "Mafioso": "[Goal]Hold more or equal to " + str(hand_card_amount + 1) + " illegal cards, but only illegal cards. (excluding Standing and cards of your Color)",
   "Broker": "[Goal]Hold " + str(asset_copy_amount * 2 + 1) + " Assets with ascending values.",
-  "Collector": "[Goal]Hold " + str(asset_copy_amount * 2) + " Assets with the same value.",
+  "Hoarder": "[Goal]Hold " + str(asset_copy_amount * 2) + " Assets with the same value.",
   "Snitch": "[Goal]Hold " + str(hand_card_amount * 2) + " Cards. (excluding Standing)",
-  "Monk": "[Goal]Hold only cards without value. (including Standing)",
+  "Isolationist": "[Goal]Hold only cards without value. (including Standing)",
   "Lobbyist": "[Perk]If you trade this card to another player, they loose all their Standing.",
   "Leach": "[Perk]If someone you have a Pact with wins, you win too.",
   "Undead": "[Perk]When you loose, take " + str((standing_card_amount - 1)) + " Standing cards from the draw pile and shuffle it again, then remove this card from the game.",
   "Liar": "[Perk]You only loose when being accused during a trade, while having no Standing. You cannot win without Standing.",
   "Officer": "[Perk]Announce to force everyone to give you all their illegal cards.",
-  "Speculator": "[Perk]At the end of the game each of your Asset cards is worth 6+1d4. (Throw a dice with 4 sides and add 6)",
+  "Speculator": "[Perk]At the end of the game each of your Asset cards is worth 5+1d4. (Throw a dice with 4 sides and add 5)",
 )
 
 #let role_card_amount = role_descriptions.len()
