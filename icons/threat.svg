@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g id="Standing" transform="matrix(1,0,0,1,0,-64)">
-        <g transform="matrix(1,0,0,-1,0,1024)">
-            <path d="M512,768L192,640L192,512L512,640L832,512L832,640L512,768Z"/>
+    <g id="Social" transform="matrix(-1,0,0,1,1024,-64)">
+        <path d="M128,832L192,706L128,640L128,256L832,256L832,706L384,704L128,832Z"/>
+        <g transform="matrix(-1,0,0,1,1024,0)">
+            <path d="M128,816L192,704L128,640L128,320L768,320L768,704L384,705.143L128,816Z" style="fill:rgb(254,255,254);"/>
         </g>
-        <g transform="matrix(1,0,0,-1,0,1280)">
-            <path d="M512,768L192,640L192,512L512,640L832,512L832,640L512,768Z"/>
+        <g transform="matrix(-1.5,0,0,1,1344,64)">
+            <path d="M640,336L640,432L512,432L512,480L469.333,480L490.667,544L405.333,544L384,352L640,336Z"/>
         </g>
     </g>
 </svg>

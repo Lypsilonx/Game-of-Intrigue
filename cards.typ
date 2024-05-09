@@ -22,11 +22,8 @@
   rotate(phi,scale(x: sx*100%, y: sy*100%,rotate(theta,body)))
 }
 
-#let card_width = 2.5in
-#let card_height = 3.5in
-#let skew_angle = 6deg
-
-#let render_card(type, value: none, illegal: false, color: none, cut_guide: true) = {
+#let render_card(type, value: none, illegal: false, color: none, cut_guide: true, role: none) = {
+  let is_role = type == "Role" and role != none
   set text(font: "Proxima Nova", weight: "medium")
   box(
     width: card_width,
@@ -44,11 +41,8 @@
         inset: 0.5em
       )[
         // Symbol
+        #let symbol = icon(type, color: color, width: 2.5em, height: 2.5em, side_distance: 0em)
         #if (symbols.keys().contains(type) and symbols.at(type) != none) {
-          let symbol = image.decode(read("icons/" + symbols.at(type))
-          .replace("rgb(0,0,0)", if color == none { gray.to-hex() } else { "rgb(0,0,0)" })
-          .replace("rgb(254,255,254)", if color == none { black } else { color }.to-hex()), width: 2.5em, height: 2.5em)
-
           place(
             top + left,
             dy: -0.2em
@@ -64,18 +58,139 @@
               #symbol
             ]
           ]
+        }
+
+        // Value
+        #if (value != none) {
+          place(
+            top + right,
+            dy: 0.2em
+          )[
+            #text(
+              size: 2em,
+              weight: "bold",
+            )[
+              #value
+            ]
+          ]
           
           place(
-            center + horizon,
-            dy: -1.5em
+            bottom + left,
+            dy: -0.2em
           )[
-            #scale(origin: center + horizon, x: 500%, y: 500%)[
-              #rotate(0deg)[
-                #symbol
+            #rotate(180deg)[
+              #text(
+                size: 2em,
+                weight: "bold",
+              )[
+                #value
               ]
             ]
           ]
         }
+        
+        #let center_symbol_scale = if (is_role) {300%} else {500%}
+        #grid(
+          align: top + center,
+          columns: 1,
+          rows: (auto, auto, 1fr),
+          [
+            #v(if (is_role) {1em} else {2.5em})
+            #text(
+              weight: "extrabold",
+              size: 2.5em
+            )[
+              #if (is_role) {
+                text(type, size: 0.7em)
+                v(-1em)
+                role
+              } else {
+                type
+              }
+            ]
+            #v(0.5em)
+          ],
+          // Center Symbol
+          box(
+          )[
+            #scale(origin: center + horizon, x: center_symbol_scale, y: center_symbol_scale, reflow: true)[
+              #rotate(0deg)[
+                #symbol
+              ]
+            ]
+          ],
+          // Description
+          box(
+            width: 100%,
+            height: 100% - 1em,
+            clip: true,
+          )[
+            #place(top + center)[
+              #line()
+            ]
+            #align(horizon)[
+              #text(
+              )[
+                #show "[X]": it => if (value == none) {"VALUE_MISSING"} else {str(value)}
+                #show "[C]": it => if (color == none) {"COLOR_MISSING"} else {color_to_string(color)}
+
+                #show regex("Social( card(s?))"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Social")#it]
+                }
+                #show regex("Standing(s?)( card(s?)?)?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Standing")#it]
+                }
+                #show regex("Pact(s?)( card(s?)?)?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Pact")#it]
+                }
+                #show regex("Asset(s?)( card(s?)?)?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Asset")#it]
+                }
+                #show regex("Influence(s?)( card(s?)?)?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Influence")#it]
+                }
+                #show regex("Testimony(s?)( card(s?)?)?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Testimony")#it]
+                }
+                #show regex("Role(s?)( card(s?)?)?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Role")#it]
+                }
+                #show regex("illegal((ly)|( card(s?)))?"): it => {
+                  set text(weight: "bold", fill: white)
+                   " " + box(it, fill: red, outset: 0.2em) + " "
+                }
+
+                #let desc = if (is_role) {
+                  set align(top)
+                  show regex("\[(Goal|Perk)\]"): it => text(weight: "extrabold", size: 1.5em)[
+                    #v(0.5em)
+                    #it.text.slice(1, -1)
+                    #v(-0.5em)
+                  ]
+                  role_descriptions.at(role)
+                } else {
+                  descriptions.at(type)
+                }
+                #desc
+                #if illegal {
+                  "\nillegal"
+                }
+              ]
+            ]
+            #place(bottom + center)[
+              #line()
+            ]
+          ]
+        )
+
+
 
         // Illegal
         #place(
@@ -113,82 +228,12 @@
             ]
           ]
         ]
-
-        // Value
-        #if (value != none) {
-          place(
-            top + right,
-            dy: 0.2em
-          )[
-            #text(
-              size: 2em,
-              weight: "bold",
-            )[
-              #value
-            ]
-          ]
-          
-          place(
-            bottom + left,
-            dy: -0.2em
-          )[
-            #rotate(180deg)[
-              #text(
-                size: 2em,
-                weight: "bold",
-              )[
-                #value
-              ]
-            ]
-          ]
-        }
-
-        #set align(center + top)
-        #v(2.5em)
-        #text(
-          weight: "extrabold",
-          size: 2.5em
-        )[
-          #type
-        ]
-
-        // Description
-        #v(35%)
-        #box(
-          width: 100%,
-          height: 25%,
-          clip: true,
-        )[
-          #place(top + center)[
-            #line()
-          ]
-          #align(horizon)[
-            #text(
-              fill: black.transparentize(40%)
-            )[
-              #let desc = descriptions.at(type)
-              #if value != none {
-                desc = desc.replace("[X]", str(value))
-              }
-              #if color != none {
-                desc = desc.replace("[C]", color_to_string(color))
-              }
-              #desc
-              #if illegal {
-                "\n(illegal)"
-              }
-            ]
-          ]
-          #place(bottom + center)[
-            #line()
-          ]
-        ]
       ]
     ]
   ]
 }
 
-#let render_card_back(value: none, illegal: false, cut_guide: true) = {
+#let render_card_back(value: none, illegal: false, cut_guide: true, role: false) = {
   set text(font: "Proxima Nova", weight: "medium")
   box(
     width: card_width,
@@ -196,13 +241,14 @@
     stroke: if cut_guide {(thickness: 0.1pt, dash: "dashed")} else {none},
     radius: 3.5mm,
     clip: true,
+    fill: if role {white} else {black},
   )[
     #align(center + horizon)[
       #box(
         width: 100% - 1em,
         height: 100% - 1em,
-        radius: 3mm,
-        stroke: 0.3em + black,
+        radius: 2mm,
+        stroke: if role { 0.3em + black } else { 0.2em + white },
         inset: (left: 0.5em, right: 0.5em, top: -0.5em, bottom: -0.5em),
         clip: true
       )[
@@ -219,7 +265,7 @@
                 size: 0.358em
               )[
                 #set align(center + top)
-                #let secret_gradient = gradient.linear(..colors, angle: 45deg, relative: "parent")
+                #let secret_gradient = if role { gradient.linear(..colors, angle: 45deg, relative: "parent")} else { white }
                 #v(2.5em)
                 #text(font: "Monaco", fill: secret_gradient)[
                   #repeat("GAME OF INTRIGUE")
@@ -227,7 +273,7 @@
                   #repeat("INTRIGUE GAME OF")
                   #repeat("GAME OF INTRIGUE")
                   #repeat("OF INTRIGUE GAME")
-                  #repeat("INTRIGUE GAME " + if (value == none) {"OF"} else { if (value < 10) {"0"} + str(value)})
+                  #repeat("INTRIGUE GAME " + if (value == none or value == 0) {"OF"} else { if (value < 10) {"0"} + str(value)})
                   #repeat("GAME OF INTRIGUE")
                   #repeat("OF INTRIGUE GAME")
                   #repeat("INTRIGUE GAME OF")
@@ -238,7 +284,8 @@
                 #v(2em, weak: true)
                 #text(
                   weight: "extrabold",
-                  size: 5em
+                  size: 5em,
+                  fill: if role {black} else {white}
                 )[
                   GAME
                   #text(
@@ -255,7 +302,7 @@
                   #repeat("GAME OF INTRIGUE")
                   #repeat("OF INTRIGUE GAME")
                   #repeat("INTRIGUE GAME OF")
-                  #repeat(if (illegal) {"GAME OF ILLEGALE"} else {"GAME OF INLEGALE"})
+                  #repeat(if (illegal) {"GAME OF ILLEGALE"} else {"GAME OF INTRIGUE"})
                   #repeat("OF INTRIGUE GAME")
                   #repeat("INTRIGUE GAME OF")
                   #repeat("GAME OF INTRIGUE")
@@ -326,6 +373,10 @@
 #for i in range(testimony_copy_amount * 3) {
   cards.push(render_card("Testimony", value: calc.rem(i, 3) + 7))
   card_backs.push(render_card_back(value: calc.rem(i, 3) + 7))
+}
+#for role in role_descriptions.keys() {
+  cards.push(render_card("Role", role: role))
+  card_backs.push(render_card_back(role: true))
 }
 
 // Render

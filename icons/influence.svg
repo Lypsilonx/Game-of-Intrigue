@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <path d="M704,768L320,768L256,640L192,384L320,256L704,256L704,384L832,320L832,576L704,768Z" style="fill:rgb(254,255,254);"/>
+    <g id="Influence">
+        <path d="M768,768L256,768L256,640L128,256L384,384L512,192L640,384L896,256L768,640L768,768Z" style="fill:rgb(254,255,254);"/>
+        <path d="M128,256L448,640L384,384L128,256Z"/>
+        <path d="M512,768L768,768L768,640L896,256L576,640L640,384L512,192L512,768Z"/>
+    </g>
 </svg>
