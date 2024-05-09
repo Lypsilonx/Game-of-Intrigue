@@ -29,14 +29,14 @@
     width: card_width,
     height: card_height,
     stroke: if cut_guide {(thickness: 0.1pt, dash: "dashed")} else {none},
-    radius: 3.5mm,
+    radius: card_cut_radius,
     clip: true,
   )[
     #align(center + horizon)[
       #box(
         width: 100% - 1em,
         height: 100% - 1em,
-        radius: 3mm,
+        radius: card_radius - 0.5mm,
         stroke: 0.3em + if color == none { black } else { color },
         inset: 0.5em
       )[
@@ -243,7 +243,7 @@
     width: card_width,
     height: card_height,
     stroke: if cut_guide {(thickness: 0.1pt, dash: "dashed")} else {none},
-    radius: 3.5mm,
+    radius: card_cut_radius,
     clip: true,
     fill: if role {white} else {black},
   )[
@@ -251,7 +251,7 @@
       #box(
         width: 100% - 1em,
         height: 100% - 1em,
-        radius: 2mm,
+        radius: card_radius - 0.5mm,
         stroke: if role { 0.3em + black } else { 0.2em + white },
         inset: (left: 0.5em, right: 0.5em, top: -0.5em, bottom: -0.5em),
         clip: true
@@ -384,9 +384,6 @@
 }
 
 // Render
-#let cards_on_page = (3, 3)
-#let cut_gutter = 1em
-
 #set page(
   "a4",
   // width: (card_width + cut_gutter) * cards_on_page.at(0) + cut_gutter,
@@ -395,6 +392,15 @@
 )
 
 #set align(center + horizon)
-#grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..cards)
-#pagebreak()
-#grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..card_backs)
+#let cards_on_page = (3, 3)
+#let cut_gutter = 1em
+// #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..cards)
+// #pagebreak()
+// #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..card_backs)
+
+#let cards_on_page = (2, 4)
+#let cut_gutter = 1em
+#grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), ..cards.enumerate().map(it => (
+  rotate(90deg,[#it.at(1)], reflow: true),
+  rotate(270deg,[#card_backs.at(it.at(0))], reflow: true)
+)).flatten())

@@ -229,7 +229,7 @@ Version #version
 = The Game <the_game>
 
 == Outline <outline>
-In the game of intrigue you compete against at least two other players.
+In the Game of Intrigue, you compete against at least two other players.
 
 You draw cards and trade them with other players to gain an advantage.\
 The most important cards are the Standing cards. If you loose all your Standing

@@ -41,6 +41,8 @@
 
 #let card_width = 2.5in
 #let card_height = 3.5in
+#let card_radius = 3.5mm
+#let card_cut_radius = 0mm
 #let skew_angle = 6deg
 
 #let role_descriptions = (
