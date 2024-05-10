@@ -392,14 +392,23 @@
 )
 
 #set align(center + horizon)
-#let cards_on_page = (3, 3)
-#let cut_gutter = 1em
+
+// #let cards_on_page = (3, 3)
+// #let cut_gutter = 1em
 // #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..cards)
 // #pagebreak()
 // #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..card_backs)
 
 #let cards_on_page = (2, 4)
 #let cut_gutter = 1em
+#set page(background: [
+  #place(center + horizon)[
+    #box(width: card_height * 2, height: 100%, stroke: (thickness: 0.1pt, dash: "dashed"), fill: white)
+  ]
+  #place(center + horizon)[
+    #box(width: 100%, height: card_width * cards_on_page.at(1), stroke: (thickness: 0.1pt, dash: "dashed"), fill: white)
+  ]
+])
 #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), ..cards.enumerate().map(it => (
   rotate(90deg,[#it.at(1)], reflow: true),
   rotate(270deg,[#card_backs.at(it.at(0))], reflow: true)
