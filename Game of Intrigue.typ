@@ -157,7 +157,7 @@
   link(<visible_on_back>, it)
 }
 
-#show regex("pay a fine"): it => {
+#show regex("(P|p)ay a fine"): it => {
   set text(weight: "bold")
   link(<fine>, it)
 }
@@ -368,7 +368,7 @@ Assets are worth their value. Thy do not have any special abilities.
 == Influence <influence>
 *_(I?, #(influence_value_range.at(0))-#(influence_value_range.at(1))X)_*
 
-Influence cards must be traded openly and cannot be declined. They are low value cards that can bloat your hand.
+Influence cards must be traded openly and cannot be declined.
 
 == Social <social>
 *_(C, I?, #(calc.min(..social_cards.map(card_data => card_data.value)))-#(calc.max(..social_cards.map(card_data => card_data.value)))X)_*
@@ -376,7 +376,7 @@ Influence cards must be traded openly and cannot be declined. They are low value
 A social card can be a Secret, Hook, Threat or Favour. It can be announced during the Announcement phase to make the player with that Color…
   - Favour: Trade with you now (Follow the steps in the Trade phase)
   - Hook: Discard 1 Standing
-  - Threat: Let you draw a card from their hand or personal pile (excluding roles)
+  - Threat: Pay a fine to you.
   - Secret: Show everyone how many illegal cards they have (Visible on back)
 == Speech <speech>
 *_(I?, #(calc.min(..(testimony_values + rebrand_values)))-#(calc.max(..(testimony_values + rebrand_values)))X)_*
@@ -455,15 +455,15 @@ Roles come in two types:
 When a player objects to a trade the legality of the traded cards is checked. You can see if a card is illegal by looking at the back of the card (see Visible on back).
 
 If any traded card is illegal:
-  1. The player offering an illegal card will have to pay a fine of half its value (rounded down) to the accuser.
+  1. The player offering an illegal card will have to pay a fine to the accuser.
   2. If any illegal Pacts were found to be offered remove them from the game. (Tipp: Pacts are the only illegal cards without a value)
   3. The trade does not happen; Everyone keeps their offered cards
 If no card is illegal:
-  1. The accusing player will have to pay a fine of 3 to one of the trading players (accusors choice)
+  1. The accusing player will have to pay a fine to one of the trading players (accusors choice)
   2. The trade goes on.
 
-== Paying a fine (of X) <fine>
-You have to give a card of at least the value X to another player.
+== Paying a fine <fine>
+You have to let the other player draw a card from your hand or personal pile (excluding roles)
 
 == Removed from the game <removed_from_game>
 Put them back in the box. They are not to be used this game anymore.

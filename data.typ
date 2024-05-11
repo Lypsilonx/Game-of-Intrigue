@@ -1,4 +1,4 @@
-#let version = "0.3.1"
+#let version = "0.3.2"
 
 // Game settings
 #let colors = (
@@ -56,7 +56,7 @@
   "Influence": "Trade openly.\nCannot be declined.",
   "Favour": "Announce to force the [C] player to trade with you.",
   "Hook": "Announce to make the [C] player discard 1 Standing.",
-  "Threat": "Announce to take a card from the [C] players hand or personal pile.",
+  "Threat": "Announce to make the [C] player pay a fine to you.",
   "Secret": "Announce to force the [C] player to tell everyone how many illegal cards they have.",
   "Testimony": "When announced you can discard [X] illegal cards from your hand.",
   "Rebrand": "When announced you can discard [X] legal cards from your hand.",
