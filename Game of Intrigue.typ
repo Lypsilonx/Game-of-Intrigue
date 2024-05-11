@@ -391,41 +391,31 @@ Roles come in two types:
   gutter: 1em,
   [
     - #player_count Color Tokens
-    - #role_card_amount x Role (0X)
+    - #role_card_amount x Role
+    - #player_count x #standing_card_amount Standing (#(standing_value)X)
     - Each Color (#player_count times):\
-      - #standing_card_amount Standing (10X)
-      - 1 x Pact (0X)
-      - #(player_count - 3) x Pact (illegal, 0X)
-      - 2 x Favour (7-8X)
-      - 1 x Favour (illegal, 9X)
-      - 1 x Hook (illegal, 7X)
-      - 1 x Hook (illegal, 8X)
-      - 1 x Threat (illegal, 7X)
-      - 1 x Threat (illegal, 8X)
-      - 2 x Secret (7-8X)
-      - 1 x Secret (illegal, 9X)
-    - #(calc.ceil(asset_copy_amount / 2) * 9) x Asset (1-9X)
-    - #(calc.floor(asset_copy_amount / 2) * 9) x Asset (1-9X, illegal)
-    - #(influence_copy_amount * 3) x Influence (2-4X)
-    - #(testimony_copy_amount * 3) x Testimony (7-9X)
+      - 1 x Pact
+      - #(player_count - 3) x Pact (illegal)
+      #for card_data in colored_cards {
+        [- 1 x #(card_data.type) (#(card_data.value)X#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
+      }
+    - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X)
+    - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X, illegal)
+    - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1))X)
+    - #(testimony_copy_amount * (testimony_value_range.at(1) - testimony_value_range.at(0) + 1)) x Testimony (#(testimony_value_range.at(0))-#(testimony_value_range.at(1))X)
   ],
   [
-    #let colored_card_count = player_count * (standing_card_amount + 1 + (player_count - 3) + 10)
-    #let non_colored_card_count = asset_copy_amount * 9 + influence_copy_amount * 3 + testimony_copy_amount * 3
-    #let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount
+    #let colored_card_count = player_count * ((player_count - 2) + colored_cards.len())
+    #let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * (testimony_value_range.at(1) - testimony_value_range.at(0) + 1)
+    #let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount + standing_card_amount * player_count
     #text[
       Color Tokens: #player_count\
       Roles: #role_card_amount\
+      Standing: #(standing_card_amount * player_count)\
       #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
+      #for _ in range(colored_cards.len()) {
+        linebreak()
+      }
       Colored cards: #(colored_card_count/player_count) per player\ ( = #colored_card_count)\
       #linebreak()
       #linebreak()

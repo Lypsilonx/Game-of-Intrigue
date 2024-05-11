@@ -1,5 +1,6 @@
 #let version = "0.3.0"
 
+// Game settings
 #let colors = (
   red,
   orange,
@@ -8,7 +9,6 @@
   blue,
   purple,
 )
-
 #let color_to_string(color) = {
   if color == blue { "Blue" }
   else if color == green { "Green" }
@@ -18,6 +18,30 @@
   else if color == orange { "Orange" }
   else { "Unknown" }
 }
+#let player_count = colors.len()
+
+#let settings_json = json("game_settings.json")
+#let hand_card_amount = settings_json.hand_card_amount
+#let standing_card_amount = settings_json.standing_card_amount
+#let standing_value = settings_json.standing_value
+
+#let asset_copy_amount = settings_json.asset_copy_amount
+#let asset_value_range = (settings_json.asset_value_range.at(0), settings_json.asset_value_range.at(1))
+
+#let influence_copy_amount = settings_json.influence_copy_amount
+#let influence_value_range = (settings_json.influence_value_range.at(0), settings_json.influence_value_range.at(1))
+
+#let testimony_copy_amount = settings_json.testimony_copy_amount
+#let testimony_value_range = (settings_json.testimony_value_range.at(0), settings_json.testimony_value_range.at(1))
+
+#let colored_cards = settings_json.colored_cards
+
+// Design settings
+#let card_width = 2.5in
+#let card_height = 3.5in
+#let card_radius = 3.5mm
+#let card_cut_radius = 0mm
+#let skew_angle = 6deg
 
 #let descriptions = (
   "Token": "Represents you as the [C] player.",
@@ -31,19 +55,6 @@
   "Secret": "Announce to force the [C] player to tell everyone how many illegal cards they have.",
   "Testimony": "When announced you are immune to Social cards with less or equal value.",
 )
-
-#let player_count = colors.len()
-#let standing_card_amount = 3
-#let hand_card_amount = 5
-#let asset_copy_amount = 5
-#let influence_copy_amount = 2
-#let testimony_copy_amount = 2
-
-#let card_width = 2.5in
-#let card_height = 3.5in
-#let card_radius = 3.5mm
-#let card_cut_radius = 0mm
-#let skew_angle = 6deg
 
 #let role_descriptions = (
   "Millionaire": "[Goal]Hold cards worth more or equal to " + str(hand_card_amount * 8) + ". (excluding Standing)",

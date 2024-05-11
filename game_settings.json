@@ -1,0 +1,63 @@
+{
+  "hand_card_amount": 5,
+  "standing_card_amount": 3,
+  "standing_value": 10,
+
+  "asset_copy_amount": 5,
+  "asset_value_range": [1, 10],
+
+  "influence_copy_amount": 2,
+  "influence_value_range": [2, 4],
+
+  "testimony_copy_amount": 2,
+  "testimony_value_range": [7, 9],
+
+  "colored_cards": [
+    {
+      "type": "Favour",
+      "value": 7
+    },
+    {
+      "type": "Favour",
+      "value": 8
+    },
+    {
+      "type": "Favour",
+      "value": 9,
+      "illegal": true
+    },
+    {
+      "type": "Hook",
+      "value": 7,
+      "illegal": true
+    },
+    {
+      "type": "Hook",
+      "value": 8,
+      "illegal": true
+    },
+    {
+      "type": "Threat",
+      "value": 7,
+      "illegal": true
+    },
+    {
+      "type": "Threat",
+      "value": 8,
+      "illegal": true
+    },
+    {
+      "type": "Secret",
+      "value": 7
+    },
+    {
+      "type": "Secret",
+      "value": 8
+    },
+    {
+      "type": "Secret",
+      "value": 9,
+      "illegal": true
+    }
+  ]
+}

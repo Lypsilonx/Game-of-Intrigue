@@ -334,8 +334,8 @@
 #let card_backs = ()
 #for color in colors {
   for _ in range(standing_card_amount) {
-    cards.push(render_card("Standing", value: 10))
-    card_backs.push(render_card_back(value: 10))
+    cards.push(render_card("Standing", value: standing_value))
+    card_backs.push(render_card_back(value: standing_value))
   }
 }
 #for color in colors {
@@ -347,42 +347,35 @@
     cards.push(render_card("Pact", color: color, illegal: true))
     card_backs.push(render_card_back(illegal: true))
   }
-  cards.push(render_card("Favour", value: 7, color: color))
-  card_backs.push(render_card_back())
-  cards.push(render_card("Favour", value: 8, color: color))
-  card_backs.push(render_card_back())
-  cards.push(render_card("Favour", value: 9, color: color, illegal: true))
-  card_backs.push(render_card_back(illegal: true))
-  cards.push(render_card("Hook", value: 7, color: color, illegal: true))
-  card_backs.push(render_card_back(illegal: true))
-  cards.push(render_card("Hook", value: 8, color: color, illegal: true))
-  card_backs.push(render_card_back(illegal: true))
-  cards.push(render_card("Threat", value: 7, color: color, illegal: true))
-  card_backs.push(render_card_back(illegal: true))
-  cards.push(render_card("Threat", value: 8, color: color, illegal: true))
-  card_backs.push(render_card_back(illegal: true))
-  cards.push(render_card("Secret", value: 7, color: color))
-  card_backs.push(render_card_back())
-  cards.push(render_card("Secret", value: 8, color: color))
-  card_backs.push(render_card_back())
-  cards.push(render_card("Secret", value: 9, color: color, illegal: true))
-  card_backs.push(render_card_back(illegal: true))
+
+  for card_data in colored_cards {
+    cards.push(render_card(card_data.type, value: card_data.value, color: color, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}))
+    card_backs.push(render_card_back(value: card_data.value, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}))
+  }
 }
-#for i in range(calc.ceil(asset_copy_amount / 2) * 9) {
-  cards.push(render_card("Asset", value: calc.rem(i, 9) + 1))
-  card_backs.push(render_card_back(value: calc.rem(i, 9) + 1))
+#for value in range(asset_value_range.at(0), asset_value_range.at(1) + 1) {
+  for _ in range(calc.ceil(asset_copy_amount / 2)) {
+    cards.push(render_card("Asset", value: value))
+    card_backs.push(render_card_back(value: value))
+  }
 }
-#for i in range(calc.floor(asset_copy_amount / 2) * 9) {
-  cards.push(render_card("Asset", value: calc.rem(i, 9) + 1, illegal: true))
-  card_backs.push(render_card_back(value: calc.rem(i, 9) + 1, illegal: true))
+#for value in range(asset_value_range.at(0), asset_value_range.at(1) + 1) {
+  for _ in range(calc.floor(asset_copy_amount / 2)) {
+    cards.push(render_card("Asset", value: value, illegal: true))
+    card_backs.push(render_card_back(value: value, illegal: true))
+  }
 }
-#for i in range(influence_copy_amount * 3) {
-  cards.push(render_card("Influence", value: calc.rem(i, 3) + 2))
-  card_backs.push(render_card_back(value: calc.rem(i, 3) + 2))
+#for value in range(influence_value_range.at(0), influence_value_range.at(1) + 1) {
+  for _ in range(influence_copy_amount) {
+    cards.push(render_card("Influence", value: value))
+    card_backs.push(render_card_back(value: value))
+  }
 }
-#for i in range(testimony_copy_amount * 3) {
-  cards.push(render_card("Testimony", value: calc.rem(i, 3) + 7))
-  card_backs.push(render_card_back(value: calc.rem(i, 3) + 7))
+#for i in range(testimony_value_range.at(0), testimony_value_range.at(1) + 1) {
+  for _ in range(testimony_copy_amount) {
+    cards.push(render_card("Testimony", value: i))
+    card_backs.push(render_card_back(value: i))
+  }
 }
 #for role in role_descriptions.keys() {
   cards.push(render_card("Role", role: role))
