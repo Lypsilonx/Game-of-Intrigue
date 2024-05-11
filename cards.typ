@@ -347,6 +347,8 @@
     cards.push(render_card("Pact", color: color, illegal: true))
     card_backs.push(render_card_back(illegal: true))
   }
+  cards.push(render_card("Favour", value: 7, color: color))
+  card_backs.push(render_card_back())
   cards.push(render_card("Favour", value: 8, color: color))
   card_backs.push(render_card_back())
   cards.push(render_card("Favour", value: 9, color: color, illegal: true))
@@ -361,18 +363,22 @@
   card_backs.push(render_card_back(illegal: true))
   cards.push(render_card("Secret", value: 7, color: color))
   card_backs.push(render_card_back())
+  cards.push(render_card("Secret", value: 8, color: color))
+  card_backs.push(render_card_back())
   cards.push(render_card("Secret", value: 9, color: color, illegal: true))
   card_backs.push(render_card_back(illegal: true))
 }
-#for i in range(asset_copy_amount * 9) {
+#for i in range(calc.ceil(asset_copy_amount / 2) * 9) {
   cards.push(render_card("Asset", value: calc.rem(i, 9) + 1))
   card_backs.push(render_card_back(value: calc.rem(i, 9) + 1))
+}
+#for i in range(calc.floor(asset_copy_amount / 2) * 9) {
   cards.push(render_card("Asset", value: calc.rem(i, 9) + 1, illegal: true))
   card_backs.push(render_card_back(value: calc.rem(i, 9) + 1, illegal: true))
 }
-#for i in range(influence_copy_amount * 4) {
-  cards.push(render_card("Influence", value: calc.rem(i, 4) + 2))
-  card_backs.push(render_card_back(value: calc.rem(i, 4) + 2))
+#for i in range(influence_copy_amount * 3) {
+  cards.push(render_card("Influence", value: calc.rem(i, 3) + 2))
+  card_backs.push(render_card_back(value: calc.rem(i, 3) + 2))
 }
 #for i in range(testimony_copy_amount * 3) {
   cards.push(render_card("Testimony", value: calc.rem(i, 3) + 7))
