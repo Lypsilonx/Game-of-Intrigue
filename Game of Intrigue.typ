@@ -97,10 +97,24 @@
   link(<social>, [#icon("Secret", color: gray)#it])
 }
 
+#show regex("Speech( card(s)?)?"): it => {
+  set text(weight: "bold")
+  link(<speech>, [#icon("Speech")#it])
+}
 
 #show regex("Testimony( card(s)?)?"): it => {
   set text(weight: "bold")
-  link(<testimony>, [#icon("Testimony")#it])
+  link(<speech>, [#icon("Testimony")#it])
+}
+
+#show regex("Rebrand( card(s)?)?"): it => {
+  set text(weight: "bold")
+  link(<speech>, [#icon("Rebrand")#it])
+}
+
+#show regex("Defence( card(s)?)?"): it => {
+  set text(weight: "bold")
+  link(<speech>, [#icon("Defence")#it])
 }
 
 #show regex("Color(ed)?(( card(s)?)|( Token(s)?))?"): it => {
@@ -211,7 +225,7 @@
           #icon("Asset", width: 5em, height: 5em, color: orange)
           #icon("Influence", width: 5em, height: 5em, color: yellow)
           #icon("Social", width: 5em, height: 5em, color: green)
-          #icon("Testimony", width: 5em, height: 5em, color: blue)
+          #icon("Speech", width: 5em, height: 5em, color: blue)
           #icon("Role", width: 5em, height: 5em, color: purple)
         ]
       ]
@@ -306,11 +320,11 @@ Example:
 === Announcement <announcement>
 _Only after a successful trade can a player participate in the Announcement and Draw phase._
 
-In the Announcement phase players can announce Social and Testimony cards.\
+In the Announcement phase players can announce Social and Speech cards.\
 
 1. Each qualifying player puts one card face down in front of them
 2. If anyone wants to announce their card they turn it around for everyone to see
-3. Announcements get resolved (See Social cards and Testimony cards)
+3. Announcements get resolved (See Social cards and Speech cards)
 4. All the cards in front of the players get put on the discard pile
 === Draw <draw>
 _Only for players that successfully traded in the Trade phase and announced in the Announcement phase_
@@ -334,11 +348,10 @@ Tipp: Keep your cards hidden as long as possible.\ You almost never have to show
 #pagebreak()
 = Cards <cards>
 == Standing <standing>
-*_(10X)_*
 
 You loose when all your Standing is lost.
 == Pact <pact>
-*_(C, I?, 0X)_*
+*_(C, I?)_*
 
 This card symbolizes a pact between you and another player.\
 It can only be traded for another Pact card and only you can trade with your Pact card. It cannot be discarded.
@@ -348,27 +361,32 @@ If you have someone else's Pact card you cannot:
 - accuse them of illegal trades
 
 == Asset <asset>
-*_(I?, 1-9X)_*
+*_(I?, #(asset_value_range.at(0))-#(asset_value_range.at(1))X)_*
 
 Assets are worth their value. Thy do not have any special abilities.
 
 == Influence <influence>
-*_(I?, 2-4X)_*
+*_(I?, #(influence_value_range.at(0))-#(influence_value_range.at(1))X)_*
 
 Influence cards must be traded openly and cannot be declined. They are low value cards that can bloat your hand.
 
 == Social <social>
-*_(C, I?, 7-9X)_*
+*_(C, I?, #(calc.min(..social_cards.map(card_data => card_data.value)))-#(calc.max(..social_cards.map(card_data => card_data.value)))X)_*
 
 A social card can be a Secret, Hook, Threat or Favour. It can be announced during the Announcement phase to make the player with that Color…
-  - Favour: Trade with you now (Follow the steps in the Trade phase, but both players have to agree to the trade)
+  - Favour: Trade with you now (Follow the steps in the Trade phase)
   - Hook: Discard 1 Standing
   - Threat: Let you draw a card from their hand or personal pile (excluding roles)
   - Secret: Show everyone how many illegal cards they have (Visible on back)
-== Testimony <testimony>
-*_(I?, 7-9X)_*
+== Speech <speech>
+*_(I?, #(calc.min(..(testimony_values + rebrand_values)))-#(calc.max(..(testimony_values + rebrand_values)))X)_*
 
-When Announced you are immune to Social cards with less or equal value this Announcement phase
+Speech cards also come in three different variants: Testimony, Rebrand and Defence. When announced they…
+  - Testimony: Let you discard X illegal cards from your hand.
+  - Rebrand: Let you discard X legal cards from your hand.
+  - Defence: Make you immune to Social cards with less or equal value this Announcement phase
+
+
 == Roles <roles>
 Roles can be obtained by drawing all the cards from your personal pile.\
 Roles come in two types:
@@ -384,39 +402,44 @@ Roles come in two types:
 === Value (X) <value>
 - A Number from 0-10 (0 is not shown on the card)
 - Visible on back
-
+#pagebreak()
 == Material <material>
+#linebreak()
 #grid(
   columns: 2,
   gutter: 1em,
   [
     - #player_count Color Tokens
     - #role_card_amount x Role
-    - #player_count x #standing_card_amount Standing (#(standing_value)X)
+    - #player_count x #standing_card_amount Standing
     - Each Color (#player_count times):\
       - 1 x Pact
       - #(player_count - 3) x Pact (illegal)
-      #for card_data in colored_cards {
+      #for card_data in social_cards {
         [- 1 x #(card_data.type) (#(card_data.value)X#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
       }
     - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X)
     - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X, illegal)
     - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1))X)
-    - #(testimony_copy_amount * (testimony_value_range.at(1) - testimony_value_range.at(0) + 1)) x Testimony (#(testimony_value_range.at(0))-#(testimony_value_range.at(1))X)
+    - #(testimony_copy_amount * testimony_values.len()) x Testimony (#(calc.min(..testimony_values))X-#(calc.max(..testimony_values))X)
+    - #(rebrand_copy_amount * rebrand_values.len()) x Rebrand (#(calc.min(..rebrand_values))X-#(calc.max(..rebrand_values))X)
+    - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))X-#(calc.max(..defence_values))X)
   ],
   [
-    #let colored_card_count = player_count * ((player_count - 2) + colored_cards.len())
-    #let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * (testimony_value_range.at(1) - testimony_value_range.at(0) + 1)
+    #let colored_card_count = player_count * ((player_count - 2) + social_cards.len())
+    #let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * testimony_values.len() + rebrand_copy_amount * rebrand_values.len() + defence_copy_amount * defence_values.len()
     #let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount + standing_card_amount * player_count
     #text[
       Color Tokens: #player_count\
       Roles: #role_card_amount\
       Standing: #(standing_card_amount * player_count)\
       #linebreak()
-      #for _ in range(colored_cards.len()) {
+      #for _ in range(social_cards.len()) {
         linebreak()
       }
       Colored cards: #(colored_card_count/player_count) per player\ ( = #colored_card_count)\
+      #linebreak()
+      #linebreak()
       #linebreak()
       #linebreak()
       #linebreak()
@@ -426,8 +449,7 @@ Roles come in two types:
     ]
   ]
 )
-
-
+#pagebreak()
 = Vocabulary <vocabulary>
 == Legality check <legality_check>
 When a player objects to a trade the legality of the traded cards is checked. You can see if a card is illegal by looking at the back of the card (see Visible on back).

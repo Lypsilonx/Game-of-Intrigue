@@ -158,6 +158,10 @@
                   set text(weight: "extrabold")
                   [ #icon("Testimony")#it]
                 }
+                #show regex("Rebrand(s?)( card(s?)?)?"): it => {
+                  set text(weight: "extrabold")
+                  [ #icon("Rebrand")#it]
+                }
                 #show regex("Role(s?)( card(s?)?)?"): it => {
                   set text(weight: "extrabold")
                   [ #icon("Role")#it]
@@ -334,8 +338,8 @@
 #let card_backs = ()
 #for color in colors {
   for _ in range(standing_card_amount) {
-    cards.push(render_card("Standing", value: standing_value))
-    card_backs.push(render_card_back(value: standing_value))
+    cards.push(render_card("Standing"))
+    card_backs.push(render_card_back())
   }
 }
 #for color in colors {
@@ -348,7 +352,7 @@
     card_backs.push(render_card_back(illegal: true))
   }
 
-  for card_data in colored_cards {
+  for card_data in social_cards {
     cards.push(render_card(card_data.type, value: card_data.value, color: color, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}))
     card_backs.push(render_card_back(value: card_data.value, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}))
   }
@@ -371,10 +375,22 @@
     card_backs.push(render_card_back(value: value))
   }
 }
-#for i in range(testimony_value_range.at(0), testimony_value_range.at(1) + 1) {
+#for value in testimony_values {
   for _ in range(testimony_copy_amount) {
-    cards.push(render_card("Testimony", value: i))
-    card_backs.push(render_card_back(value: i))
+    cards.push(render_card("Testimony", value: value))
+    card_backs.push(render_card_back(value: value))
+  }
+}
+#for value in rebrand_values {
+  for _ in range(rebrand_copy_amount) {
+    cards.push(render_card("Rebrand", value: value))
+    card_backs.push(render_card_back(value: value))
+  }
+}
+#for value in defence_values {
+  for _ in range(defence_copy_amount) {
+    cards.push(render_card("Defence", value: value))
+    card_backs.push(render_card_back(value: value))
   }
 }
 #for role in role_descriptions.keys() {

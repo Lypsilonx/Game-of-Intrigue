@@ -1,4 +1,4 @@
-#let version = "0.3.0"
+#let version = "0.3.1"
 
 // Game settings
 #let colors = (
@@ -23,7 +23,6 @@
 #let settings_json = json("game_settings.json")
 #let hand_card_amount = settings_json.hand_card_amount
 #let standing_card_amount = settings_json.standing_card_amount
-#let standing_value = settings_json.standing_value
 
 #let asset_copy_amount = settings_json.asset_copy_amount
 #let asset_value_range = (settings_json.asset_value_range.at(0), settings_json.asset_value_range.at(1))
@@ -32,9 +31,15 @@
 #let influence_value_range = (settings_json.influence_value_range.at(0), settings_json.influence_value_range.at(1))
 
 #let testimony_copy_amount = settings_json.testimony_copy_amount
-#let testimony_value_range = (settings_json.testimony_value_range.at(0), settings_json.testimony_value_range.at(1))
+#let testimony_values = settings_json.testimony_values
 
-#let colored_cards = settings_json.colored_cards
+#let rebrand_copy_amount = settings_json.rebrand_copy_amount
+#let rebrand_values = settings_json.rebrand_values
+
+#let defence_copy_amount = settings_json.defence_copy_amount
+#let defence_values = settings_json.defence_values
+
+#let social_cards = settings_json.social_cards
 
 // Design settings
 #let card_width = 2.5in
@@ -49,19 +54,22 @@
   "Pact": "Symbolizes a pact between you and another player.",
   "Asset": "Worth [X] (Value)",
   "Influence": "Trade openly.\nCannot be declined.",
-  "Favour": "Announce to force the [C] player to trade with you. You both have to accept the trade.",
+  "Favour": "Announce to force the [C] player to trade with you.",
   "Hook": "Announce to make the [C] player discard 1 Standing.",
   "Threat": "Announce to take a card from the [C] players hand or personal pile.",
   "Secret": "Announce to force the [C] player to tell everyone how many illegal cards they have.",
-  "Testimony": "When announced you are immune to Social cards with less or equal value.",
+  "Testimony": "When announced you can discard [X] illegal cards from your hand.",
+  "Rebrand": "When announced you can discard [X] legal cards from your hand.",
+  "Defence": "When announced you are immune to Threat cards with less or equal value.",
 )
 
+#let goal_hand_size = calc.ceil(hand_card_amount * 1.5)
 #let role_descriptions = (
-  "Millionaire": "[Goal]Hold cards worth more or equal to " + str(hand_card_amount * 8) + ". (excluding Standing)",
-  "Mafioso": "[Goal]Hold more or equal to " + str(hand_card_amount + 1) + " illegal cards, but only illegal cards. (excluding Standing and cards of your Color)",
-  "Broker": "[Goal]Hold " + str(asset_copy_amount + 1) + " Assets with ascending values.",
-  "Hoarder": "[Goal]Hold " + str(asset_copy_amount) + " Assets with the same value.",
-  "Snitch": "[Goal]Hold " + str(hand_card_amount * 2) + " Cards. (excluding Standing)",
+  "Millionaire": "[Goal]Hold cards worth more or equal to " + str(calc.floor(int(goal_hand_size * ((asset_value_range.at(1) + asset_value_range.at(0)) / 2) / 10) * 10)) + ". (excluding Standing)",
+  "Mafioso": "[Goal]Hold more or equal to " + str(goal_hand_size) + " illegal cards, but only illegal cards. (excluding Standing and cards of your Color)",
+  "Broker": "[Goal]Hold " + str(goal_hand_size) + " cards with ascending values.",
+  "Hoarder": "[Goal]Hold " + str(calc.ceil(asset_copy_amount * 0.8)) + " Assets with the same value.",
+  "Snitch": "[Goal]Hold " + str(calc.floor(goal_hand_size * 1.5)) + " Cards. (excluding Standing)",
   "Isolationist": "[Goal]Hold only cards without value. (including Standing)",
   "Lobbyist": "[Perk]If you trade this card to another player, they loose all their Standing.",
   "Leach": "[Perk]If someone you have a Pact with wins, you win too. When you loose, you can try to sneak this card out of the game, to win later.",
@@ -84,7 +92,10 @@
   "Hook": "hook.svg",
   "Threat": "threat.svg",
   "Secret": "secret.svg",
+  "Speech": "speech.svg",
   "Testimony": "testimony.svg",
+  "Rebrand": "rebrand.svg",
+  "Defence": "defence.svg",
   "Role": "role.svg",
 )
 
