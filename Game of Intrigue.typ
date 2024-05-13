@@ -22,17 +22,34 @@
 #set text(font: "Proxima Nova")
 #set page(
   "a5",
+  background: locate(
+    loc => {
+      if loc.page() == 1 or loc.page() == counter(page).final().at(0) {
+        box(
+          width: 100%,
+          height: 100%,
+          fill: black,
+          radius: 0.5em,
+          outset: 5em,
+        )
+      } else {
+        none
+      }
+    }
+  ),
   footer: [
     #locate(
       loc => {
-        if loc.page() != 1 {
-          if (calc.odd(loc.page())) {
-              place(right, counter(page).display("1"));
-            } else {
-              place(left, counter(page).display("1"));
-            }
-          place(center, [Game of Intrigue])
-        } else {
+        if loc.page() == 1 {
+          set text(fill: white)
+          place(
+            center,
+            [
+              // Footer text title page
+            ]
+          )
+        }
+        else if loc.page() == counter(page).final().at(0) {
           set text(fill: white)
           place(
             center,
@@ -41,6 +58,13 @@
               Lyx Rothböck 2024\
             ]
           )
+        } else {
+          if (calc.odd(loc.page())) {
+              place(right, counter(page).display("1"));
+            } else {
+              place(left, counter(page).display("1"));
+            }
+          place(center, [Game of Intrigue])
         }
       }
     )
@@ -54,7 +78,7 @@
 
 #show regex("Role(s)?( card(s)?)?"): it => {
   set text(weight: "bold")
-  link(<roles>, [#icon("Role")#it])
+  link(<role>, [#icon("Role")#it])
 }
 
 #show regex("Pact(s)?( card(s)?)?"): it => {
@@ -176,13 +200,6 @@
   set text(weight: "bold")
   link(<legality_check>, it)
 }
-#box(
-  width: 100%,
-  height: 100%,
-  fill: black,
-  radius: 0.5em,
-  outset: 5em,
-)
 #place(
   center + horizon,
   dx: -0.5em,
@@ -327,6 +344,7 @@ In the Announcement phase players can announce Social and Speech cards.\
 2. If anyone wants to announce their card they turn it around for everyone to see
 3. Announcements get resolved (See Social cards and Speech cards)
 4. All the cards in front of the players get put on the discard pile
+#pagebreak()
 === Draw <draw>
 _Only for players that successfully traded in the Trade phase and announced in the Announcement phase_
 
@@ -348,10 +366,11 @@ Tipp: Keep your cards hidden as long as possible.\ You almost never have to show
 
 #pagebreak()
 = Cards <cards>
-== Standing <standing>
+== Types <types>
+=== Standing <standing>
 
 You loose when all your Standing is lost.
-== Pact <pact>
+=== Pact <pact>
 _Colored_\
 _Can be Illegal_\
 
@@ -362,19 +381,20 @@ If you have someone else's Pact card you cannot:
 - use a Social card on them
 - accuse them of illegal trades
 
-== Asset <asset>
+=== Asset <asset>
 _Can be Illegal_\
 _Value #(asset_value_range.at(0))-#(asset_value_range.at(1))X_
 
 Assets are worth their value. Thy do not have any special abilities.
 
-== Influence <influence>
+=== Influence <influence>
 _Can be Illegal_\
 _Value #(influence_value_range.at(0))-#(influence_value_range.at(1))X_
 
 Influence cards must be traded openly and cannot be declined.
 
-== Social <social>
+#pagebreak()
+=== Social <social>
 _Colored_\
 _Can be Illegal_\
 _Value #(calc.min(..social_cards.map(card_data => card_data.value)))-#(calc.max(..social_cards.map(card_data => card_data.value)))X_
@@ -384,7 +404,7 @@ A social card can be a Secret, Hook, Threat or Favour. It can be announced durin
   - Hook: Discard 1 Standing
   - Threat: Pay a fine to you.
   - Secret: Show everyone how many illegal cards they have (Visible on back)
-== Speech <speech>
+=== Speech <speech>
 _Value #(calc.min(..(testimony_values + rebrand_values)))-#(calc.max(..(testimony_values + rebrand_values)))_
 
 Speech cards also come in three different variants: Testimony, Rebrand and Defence. When announced they…
@@ -393,12 +413,13 @@ Speech cards also come in three different variants: Testimony, Rebrand and Defen
   - Defence: Make you immune to Social cards with less or equal value this Announcement phase
 
 
-== Roles <roles>
+=== Role <role>
 Roles can be obtained by drawing all the cards from your personal pile.\
 Roles come in two types:
 - *Goal*: You win if you fulfill a specific condition
 - *Perk*: You get a special ability
 
+#pagebreak()
 == Properties <properties>
 === Illegal <illegal>
 - Relevant during legality checks in the Trade phase
@@ -408,54 +429,6 @@ Roles come in two types:
 === Value <value>
 - A Number from 0-10 (0 is not shown on the card)
 - Visible on back
-#pagebreak()
-== Material <material>
-#linebreak()
-#grid(
-  columns: 2,
-  gutter: 1em,
-  [
-    - #player_count Color Tokens
-    - #role_card_amount x Role
-    - #player_count x #standing_card_amount Standing
-    - Each Color (#player_count times):\
-      - 1 x Pact
-      - #(player_count - 3) x Pact (illegal)
-      #for card_data in social_cards {
-        [- 1 x #(card_data.type) (#(card_data.value)X#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
-      }
-    - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X)
-    - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X, illegal)
-    - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1))X)
-    - #(testimony_copy_amount * testimony_values.len()) x Testimony (#(calc.min(..testimony_values))X-#(calc.max(..testimony_values))X)
-    - #(rebrand_copy_amount * rebrand_values.len()) x Rebrand (#(calc.min(..rebrand_values))X-#(calc.max(..rebrand_values))X)
-    - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))X-#(calc.max(..defence_values))X)
-  ],
-  [
-    #let colored_card_count = player_count * ((player_count - 2) + social_cards.len())
-    #let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * testimony_values.len() + rebrand_copy_amount * rebrand_values.len() + defence_copy_amount * defence_values.len()
-    #let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount + standing_card_amount * player_count
-    #text[
-      Color Tokens: #player_count\
-      Roles: #role_card_amount\
-      Standing: #(standing_card_amount * player_count)\
-      #linebreak()
-      #for _ in range(social_cards.len()) {
-        linebreak()
-      }
-      Colored cards: #(colored_card_count/player_count) per player\ ( = #colored_card_count)\
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      Non-colored cards: #non_colored_card_count\
-      #line()
-      Total cards: #card_count
-    ]
-  ]
-)
-#pagebreak()
 = Vocabulary <vocabulary>
 == Legality check <legality_check>
 When a player objects to a trade the legality of the traded cards is checked. You can see if a card is illegal by looking at the back of the card (see Visible on back).
@@ -473,7 +446,6 @@ You have to let the other player draw a card from your hand or personal pile (ex
 
 == Removed from the game <removed_from_game>
 Put them back in the box. They are not to be used this game anymore.
-#pagebreak()
 == Visible on Back <visible_on_back>
 - The small text on the back of the card contains the card's value and if it is illegal
 
@@ -541,3 +513,52 @@ Put them back in the box. They are not to be used this game anymore.
   [Value: 99, Illegal],
   [No Value, Legal]
 )
+#pagebreak()
+= Material <material>
+#linebreak()
+#grid(
+  columns: 2,
+  gutter: 1em,
+  [
+    - #player_count Color Tokens
+    - #role_card_amount x Role
+    - #player_count x #standing_card_amount Standing
+    - Each Color (#player_count times):\
+      - 1 x Pact
+      - #(player_count - 3) x Pact (illegal)
+      #for card_data in social_cards {
+        [- 1 x #(card_data.type) (#(card_data.value)X#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
+      }
+    - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X)
+    - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X, illegal)
+    - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1))X)
+    - #(testimony_copy_amount * testimony_values.len()) x Testimony (#(calc.min(..testimony_values))X-#(calc.max(..testimony_values))X)
+    - #(rebrand_copy_amount * rebrand_values.len()) x Rebrand (#(calc.min(..rebrand_values))X-#(calc.max(..rebrand_values))X)
+    - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))X-#(calc.max(..defence_values))X)
+  ],
+  [
+    #let colored_card_count = player_count * ((player_count - 2) + social_cards.len())
+    #let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * testimony_values.len() + rebrand_copy_amount * rebrand_values.len() + defence_copy_amount * defence_values.len()
+    #let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount + standing_card_amount * player_count
+    #text[
+      Color Tokens: #player_count\
+      Roles: #role_card_amount\
+      Standing: #(standing_card_amount * player_count)\
+      #linebreak()
+      #for _ in range(social_cards.len()) {
+        linebreak()
+      }
+      Colored cards: #(colored_card_count/player_count) per player\ ( = #colored_card_count)\
+      #linebreak()
+      #linebreak()
+      #linebreak()
+      #linebreak()
+      #linebreak()
+      Non-colored cards: #non_colored_card_count\
+      #line()
+      Total cards: #card_count
+    ]
+  ]
+)
+#pagebreak()
+
