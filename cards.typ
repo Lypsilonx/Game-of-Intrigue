@@ -40,6 +40,52 @@
         stroke: 0.3em + if color == none { black } else { color },
         inset: 0.5em
       )[
+        // Accessiblity stripes
+        #let thickness = 0.3em
+        #place(
+          top + left,
+          dy: 2em,
+          dx: -1em
+        )[
+          #if colors.contains(color) {
+            for i in range(colors.position(e => e == color) + 1) {
+              if (calc.rem(i, 2) == 0) {
+                v(thickness * 2, weak: true)
+              }
+
+              box(
+                width: 10%,
+                height: thickness,
+                fill: white
+              )
+              v(thickness, weak: true)
+            }
+          }
+        ]
+
+        #place(
+          bottom + right,
+          dy: -2em,
+          dx: 1em
+        )[
+          #rotate(180deg)[
+            #if colors.contains(color) {
+              for i in range(colors.position(e => e == color) + 1) {
+                if (calc.rem(i, 2) == 0) {
+                  v(thickness * 2, weak: true)
+                }
+
+                box(
+                  width: 10%,
+                  height: thickness,
+                  fill: white
+                )
+                v(thickness, weak: true)
+              }
+            }
+          ]
+        ]
+
         // Symbol
         #let symbol = icon(type, color: color, width: 2.5em, height: 2.5em, side_distance: 0em)
         #if (symbols.keys().contains(type) and symbols.at(type) != none) {
@@ -197,8 +243,6 @@
             ]
           ]
         )
-
-
 
         // Illegal
         #place(

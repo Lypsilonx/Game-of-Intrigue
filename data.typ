@@ -51,7 +51,7 @@
 #let descriptions = (
   "Token": "Represents you as the [C] player.",
   "Standing": "If you loose all of these cards, you are eliminated.",
-  "Pact": "Symbolizes a pact between you and another player.",
+  "Pact": "Symbolizes a pact between you and the [C] player.",
   "Asset": "Worth [X] (Value)",
   "Influence": "Trade openly.\nCannot be declined.",
   "Favour": "Announce to force the [C] player to trade with you.",
@@ -60,7 +60,7 @@
   "Secret": "Announce to force the [C] player to tell everyone how many illegal cards they have.",
   "Testimony": "When announced you can discard [X] illegal cards from your hand.",
   "Rebrand": "When announced you can discard [X] legal cards from your hand.",
-  "Defence": "When announced you are immune to Threat cards with less or equal value.",
+  "Defence": "When announced you are immune to Threat cards up to a Value of [X].",
 )
 
 #let goal_hand_size = calc.ceil(hand_card_amount * 1.5)
