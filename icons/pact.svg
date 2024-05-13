@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
-    <g id="Pact" transform="matrix(1,0,0,1,0,-64)">
-        <path d="M704,384L768,640L384,832L128,704L128,384L256,320L512,320L704,384Z" style="fill:rgb(254,255,254);"/>
-        <path d="M896,704L512,768L768,640L640,384L384,464L320,384L640,256L896,384L896,704Z"/>
+    <g id="Pact" transform="matrix(1,0,0,1,2.27374e-13,-128)">
+        <path d="M768,512L832,704L768,832L704,896L448,896L256,832L128,768L128,384L384,320L640,384L640,448L768,512Z" style="fill:rgb(254,255,254);"/>
+        <path d="M512,896L320,896L256,832L256,768L448,768L512,896Z"/>
+        <path d="M896,384L896,768L768,832L832,704L768,512L640,448L384,448L384,384L640,320L896,384Z"/>
     </g>
 </svg>
