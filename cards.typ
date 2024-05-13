@@ -22,8 +22,9 @@
   rotate(phi,scale(x: sx*100%, y: sy*100%,rotate(theta,body)))
 }
 
-#let render_card(type, value: none, illegal: false, color: none, cut_guide: true, role: none) = {
-  let is_role = type == "Role" and role != none
+#let render_card(type, value: none, illegal: false, color: none, cut_guide: true, supertitle: none) = {
+  let has_supertitle = supertitle != none and display_supertitle
+  let is_role = supertitle == "Role"
   set text(font: "Proxima Nova", weight: "medium")
   box(
     width: card_width,
@@ -87,7 +88,11 @@
         ]
 
         // Symbol
-        #let symbol = icon(type, color: color, width: 2.5em, height: 2.5em, side_distance: 0em)
+        #let symbol_name = type
+        #if (is_role) {
+          symbol_name = "Role"
+        }
+        #let symbol = icon(symbol_name, color: color, width: 2.5em, height: 2.5em, side_distance: 0em)
         #if (symbols.keys().contains(type) and symbols.at(type) != none) {
           place(
             top + left,
@@ -141,18 +146,16 @@
           columns: 1,
           rows: (auto, auto, 1fr),
           [
-            #v(if (is_role) {1em} else {2.5em})
+            #v(if (has_supertitle) {1em} else {2.5em})
             #text(
               weight: "extrabold",
               size: 2.5em
             )[
-              #if (is_role) {
-                text(type, size: 0.7em)
+              #if (has_supertitle) {
+                text(supertitle, size: 0.7em)
                 v(-1em)
-                role
-              } else {
-                type
               }
+              #type
             ]
             #v(0.5em)
           ],
@@ -228,7 +231,7 @@
                     #it.text.slice(1, -1)
                     #v(-0.5em)
                   ]
-                  role_descriptions.at(role)
+                  role_descriptions.at(type)
                 } else {
                   descriptions.at(type)
                 }
@@ -397,7 +400,7 @@
   }
 
   for card_data in social_cards {
-    cards.push(render_card(card_data.type, value: card_data.value, color: color, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}))
+    cards.push(render_card(card_data.type, value: card_data.value, color: color, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}, supertitle: "Social"))
     card_backs.push(render_card_back(value: card_data.value, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}))
   }
 }
@@ -421,24 +424,24 @@
 }
 #for value in testimony_values {
   for _ in range(testimony_copy_amount) {
-    cards.push(render_card("Testimony", value: value))
+    cards.push(render_card("Testimony", value: value, supertitle: "Speech"))
     card_backs.push(render_card_back(value: value))
   }
 }
 #for value in rebrand_values {
   for _ in range(rebrand_copy_amount) {
-    cards.push(render_card("Rebrand", value: value))
+    cards.push(render_card("Rebrand", value: value, supertitle: "Speech"))
     card_backs.push(render_card_back(value: value))
   }
 }
 #for value in defence_values {
   for _ in range(defence_copy_amount) {
-    cards.push(render_card("Defence", value: value))
+    cards.push(render_card("Defence", value: value, supertitle: "Speech"))
     card_backs.push(render_card_back(value: value))
   }
 }
 #for role in role_descriptions.keys() {
-  cards.push(render_card("Role", role: role))
+  cards.push(render_card(role, supertitle: "Role"))
   card_backs.push(render_card_back(role: true))
 }
 

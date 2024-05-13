@@ -64,5 +64,7 @@
       "value": 4,
       "illegal": true
     }
-  ]
+  ],
+
+  "display_supertitle": true
 }

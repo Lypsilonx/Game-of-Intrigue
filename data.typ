@@ -1,4 +1,4 @@
-#let version = "0.3.2"
+#let version = "0.3.3"
 
 // Game settings
 #let colors = (
@@ -47,6 +47,7 @@
 #let card_radius = 3.5mm
 #let card_cut_radius = 0mm
 #let skew_angle = 6deg
+#let display_supertitle = settings_json.display_supertitle
 
 #let descriptions = (
   "Token": "Represents you as the [C] player.",
