@@ -305,16 +305,17 @@ Example:
   color_to_string(color)
 }
 
-- C0(Max) announces they want to trade an Col1 Favour with C4(Nic)
-- C4(Nic) accepts and offers an Asset card (Value 8) to C0(Max)
+- C0(Max) announces they want to trade an Col1 Favour with C4(Rue)
+- C4(Rue) accepts and offers an Asset card (Value 8) to C0(Max)
 - C0(Max) accepts the trade
 - C1(Alex) objects to the trade because they are Col1 and know they haven't pulled any Favour cards from their personal pile yet, so it must be a bluff. They also know from a previous Secret card that C0(Max) has a lot of illegal cards in their hand.
 - The legality of the trade is checked
   - No illegal cards were traded
-- C1(Alex) gives C4(Nic) an Asset card (Value 6) as a fine
-- C0(Max) gives C4(Nic) a Testimony card (Value 7) _secretly_
-- C4(Nic) gives C0(Max) a Col4 Favour card (Value 8) _secretly_
-- C0(Max) and C4(Nic) now qualify for the Announcement and Draw phase
+- C1(Alex) decides to pay a fine to C4(Rue)
+- C4(Rue) draws a card from C1(Alex)'s hand
+- C0(Max) gives C4(Rue) a Testimony card (Value 2) _secretly_
+- C4(Rue) gives C0(Max) a Col4 Favour card (Value 3) _secretly_
+- C0(Max) and C4(Rue) now qualify for the Announcement and Draw phase
 - C1(Alex) and the other players can still trade with each other
 
 === Announcement <announcement>
@@ -351,27 +352,32 @@ Tipp: Keep your cards hidden as long as possible.\ You almost never have to show
 
 You loose when all your Standing is lost.
 == Pact <pact>
-*_(C, I?)_*
+_Colored_\
+_Can be Illegal_\
 
 This card symbolizes a pact between you and another player.\
-It can only be traded for another Pact card and only you can trade with your Pact card. It cannot be discarded.
+It can only be traded for another Pact card and only you can trade with your Pact card. When discarded it is removed from the game.
 
 If you have someone else's Pact card you cannot:
 - use a Social card on them
 - accuse them of illegal trades
 
 == Asset <asset>
-*_(I?, #(asset_value_range.at(0))-#(asset_value_range.at(1))X)_*
+_Can be Illegal_\
+_Value #(asset_value_range.at(0))-#(asset_value_range.at(1))X_
 
 Assets are worth their value. Thy do not have any special abilities.
 
 == Influence <influence>
-*_(I?, #(influence_value_range.at(0))-#(influence_value_range.at(1))X)_*
+_Can be Illegal_\
+_Value #(influence_value_range.at(0))-#(influence_value_range.at(1))X_
 
 Influence cards must be traded openly and cannot be declined.
 
 == Social <social>
-*_(C, I?, #(calc.min(..social_cards.map(card_data => card_data.value)))-#(calc.max(..social_cards.map(card_data => card_data.value)))X)_*
+_Colored_\
+_Can be Illegal_\
+_Value #(calc.min(..social_cards.map(card_data => card_data.value)))-#(calc.max(..social_cards.map(card_data => card_data.value)))X_
 
 A social card can be a Secret, Hook, Threat or Favour. It can be announced during the Announcement phase to make the player with that Color…
   - Favour: Trade with you now (Follow the steps in the Trade phase)
@@ -379,7 +385,7 @@ A social card can be a Secret, Hook, Threat or Favour. It can be announced durin
   - Threat: Pay a fine to you.
   - Secret: Show everyone how many illegal cards they have (Visible on back)
 == Speech <speech>
-*_(I?, #(calc.min(..(testimony_values + rebrand_values)))-#(calc.max(..(testimony_values + rebrand_values)))X)_*
+_Value #(calc.min(..(testimony_values + rebrand_values)))-#(calc.max(..(testimony_values + rebrand_values)))_
 
 Speech cards also come in three different variants: Testimony, Rebrand and Defence. When announced they…
   - Testimony: Let you discard X illegal cards from your hand.
@@ -394,12 +400,12 @@ Roles come in two types:
 - *Perk*: You get a special ability
 
 == Properties <properties>
-=== Illegal (I) <illegal>
+=== Illegal <illegal>
 - Relevant during legality checks in the Trade phase
 - Visible on back
-=== Colored (C) <colored>
+=== Colored <colored>
 - Belongs to a specific player
-=== Value (X) <value>
+=== Value <value>
 - A Number from 0-10 (0 is not shown on the card)
 - Visible on back
 #pagebreak()

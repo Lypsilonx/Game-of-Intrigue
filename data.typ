@@ -52,7 +52,7 @@
 #let descriptions = (
   "Token": "Represents you as the [C] player.",
   "Standing": "If you loose all of these cards, you are eliminated.",
-  "Pact": "Symbolizes a pact between you and the [C] player.",
+  "Pact": "Symbolizes a pact with the [C] player. Removed from the game when discarded.",
   "Asset": "Worth [X] (Value)",
   "Influence": "Trade openly.\nCannot be declined.",
   "Favour": "Announce to force the [C] player to trade with you.",
