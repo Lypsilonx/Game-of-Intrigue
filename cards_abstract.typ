@@ -15,54 +15,44 @@
       #box(
         width: 100% - 1em,
         height: 100% - 1em,
-        radius: card_radius - 0.5mm,
-        stroke: 0.3em + if color == none { black } else { color },
-        inset: 0.5em
+        radius: card_radius - 0.5mm
       )[
-        // Accessiblity stripes
-        #let thickness = 0.3em
+        // Color
         #place(
-          top + left,
-          dy: 2em,
-          dx: -1em
+          center + top,
+          dy: -0.5em
         )[
-          #if colors.contains(color) {
-            for i in range(colors.position(e => e == color) + 1) {
-              if (calc.rem(i, 2) == 0) {
-                v(thickness * 2, weak: true)
-              }
-
-              box(
-                width: 10%,
-                height: thickness,
-                fill: white
-              )
-              v(thickness, weak: true)
-            }
-          }
+          #polygon(
+            fill: if (color != none) {color} else {black}.transparentize(50%),
+            (0%, 0%),
+            (110%, 0%),
+            (110%, 55%),
+            (0%, 55%),
+          )
         ]
-
-        #place(
-          bottom + right,
-          dy: -2em,
-          dx: 1em
-        )[
-          #rotate(180deg)[
-            #if colors.contains(color) {
-              for i in range(colors.position(e => e == color) + 1) {
-                if (calc.rem(i, 2) == 0) {
-                  v(thickness * 2, weak: true)
-                }
-
-                box(
-                  width: 10%,
-                  height: thickness,
-                  fill: white
-                )
-                v(thickness, weak: true)
-              }
-            }
-          ]
+        #place(center + horizon)[
+          #polygon(
+            fill: if (color != none) {color} else {black}.transparentize(50%),
+            (0%, 0%),
+            (110%, 0%),
+            (0%, 110%)
+          )
+        ]
+        #place(center + horizon)[
+          #polygon(
+            fill: if (color != none) {color} else {black}.transparentize(50%),
+            (0%, 0%),
+            (140%, 0%),
+            (0%, 110%)
+          )
+        ]
+        #place(center + horizon)[
+          #polygon(
+            fill: if (color != none) {color} else {black}.transparentize(50%),
+            (0%, 0%),
+            (250%, 0%),
+            (0%, 110%)
+          )
         ]
 
         // Symbol
@@ -70,194 +60,154 @@
         #if (is_role) {
           symbol_name = "Role"
         }
-        #let symbol = icon(symbol_name, color: color, width: 2.5em, height: 2.5em, side_distance: 0em)
-        #if (symbols.keys().contains(type) and symbols.at(type) != none) {
-          place(
-            top + left,
-            dy: -0.2em
-          )[
-            #symbol
-          ]
-          
-          place(
-            bottom + right,
-            dy: 0.2em
-          )[
-            #rotate(180deg)[
-              #symbol
-            ]
-          ]
-        }
-
-        // Value
-        #if (value != none) {
-          place(
-            top + right,
-            dy: 0.2em
-          )[
-            #text(
-              size: 2em,
-              weight: "bold",
-            )[
-              #value
-            ]
-          ]
-          
-          place(
-            bottom + left,
-            dy: -0.2em
-          )[
-            #rotate(180deg)[
-              #text(
-                size: 2em,
-                weight: "bold",
-              )[
-                #value
-              ]
-            ]
-          ]
-        }
+        #let symbol_color = icon(symbol_name, color: color, width: 2.5em, height: 2.5em, side_distance: 0em)
+        #let symbol = icon(symbol_name, color: white, color2: if type == "Standing" {white} else {black}, width: 2.5em, height: 2.5em, side_distance: 0em)
         
-        #let center_symbol_scale = if (is_role) {300%} else {500%}
-        #grid(
-          align: top + center,
-          columns: 1,
-          rows: (auto, auto, 1fr),
-          [
-            #v(if (has_supertitle) {1em} else {2.5em})
+        #let center_symbol_scale = 400%
+        #scale(origin: center + horizon, x: center_symbol_scale, y: center_symbol_scale, reflow: true)[
+          #symbol
+        ]
+        #if type == "Standing" [
+          #v(-1em)
+          #scale(origin: center + horizon, x: center_symbol_scale, y: center_symbol_scale, reflow: true)[
+            #rotate(180deg)[
+              #symbol_color
+            ]
+          ]
+        ]
+
+        // Illegal
+        #place(
+          right + horizon,
+          dy: -1.25em
+        )[
+          #rotate(-90deg, reflow: true)[
             #text(
               weight: "extrabold",
               size: 2.5em
             )[
-              #if (has_supertitle) {
-                text(supertitle, size: 0.7em)
-                v(-1em)
-              }
-              #type
-            ]
-            #v(0.5em)
-          ],
-          // Center Symbol
-          box(
-          )[
-            #scale(origin: center + horizon, x: center_symbol_scale, y: center_symbol_scale, reflow: true)[
-              #rotate(0deg)[
-                #symbol
-              ]
-            ]
-          ],
-          // Description
-          box(
-            width: 100%,
-            height: 100% - 1em,
-            clip: true,
-          )[
-            #place(top + center)[
-              #line()
-            ]
-            #align(horizon)[
-              #text(
+              #box(
+                width: 100% + 1em,
+                height: 1em,
+                fill: white
               )[
-                #show "[X]": it => if (value == none) {"VALUE_MISSING"} else {str(value)}
-                #show "[C]": it => if (color == none) {"COLOR_MISSING"} else {color_to_string(color)}
-
-                #show regex("Social( card(s?))"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Social")#it]
-                }
-                #show regex("Standing(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Standing")#it]
-                }
-                #show regex("Pact(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Pact")#it]
-                }
-                #show regex("Asset(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Asset")#it]
-                }
-                #show regex("Influence(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Influence")#it]
-                }
-                #show regex("Testimony(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Testimony")#it]
-                }
-                #show regex("Rebrand(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Rebrand")#it]
-                }
-                #show regex("Role(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Role")#it]
-                }
-                #show regex("Color( Token)?"): it => {
-                  set text(weight: "extrabold")
-                  [ #icon("Token")#it]
-                }
-                #show regex("illegal((ly)|( card(s?)))?"): it => {
-                  set text(weight: "bold", fill: white)
-                   " " + box(it, fill: red, outset: 0.2em) + " "
-                }
-
-                #let desc = if (is_role) {
-                  set align(top)
-                  show regex("\[(Goal|Perk)\]"): it => text(weight: "extrabold", size: 1.5em)[
-                    #v(0.5em)
-                    #it.text.slice(1, -1)
-                    #v(-0.5em)
+                #box(
+                  width: 100%,
+                  height: 0.8em,
+                  inset: (right: 1em, left: 3em)
+                )[
+                  #text(
+                    size: 0.35em,
+                    fill: if (color != none) {color} else {black}
+                  )[
+                    #if (illegal) {
+                      repeat("ILLEGAL")
+                    }
                   ]
-                  role_descriptions.at(type)
-                } else {
-                  descriptions.at(type)
-                }
-                #desc
-                #if illegal {
-                  "\nillegal"
-                }
+                ]
               ]
-            ]
-            #place(bottom + center)[
-              #line()
             ]
           ]
-        )
+        ]
 
-        // Illegal
+        // Type
         #place(
-          center + horizon,
-          dx: -0em,
-          dy: 2.2em
+          left + horizon,
+          dy: -1.25em
         )[
-          #skew(-skew_angle)[
-            #rotate(-skew_angle, reflow: true)[
-              #if (illegal) {
-                text(
-                  weight: "extrabold",
-                  size: 2.5em
+          #rotate(90deg, reflow: true)[
+            #text(
+              weight: "extrabold",
+              size: 2.5em
+            )[
+              #box(
+                width: 100% + 1em,
+                height: 1em,
+                fill: if (color != none) {color} else {black}
+              )[
+                #box(
+                  width: 100%,
+                  height: 0.8em,
+                  inset: if (value != none or type != "Standing") {(right: 1em, left: 3em)} else {(right: 1em, left: 1em)}
                 )[
-                  #box(
-                    width: 100%,
-                    height: 1em,
-                    fill: white
-                  )[
-                    #box(
-                      width: 100%,
-                      height: 0.8em,
-                      fill: red
+                  #rotate(180deg, reflow: true)[
+                    #text(
+                      size: 0.35em,
+                      fill: white
                     )[
-                      #text(
-                        size: 0.35em,
-                        fill: white
-                      )[
-                        #repeat("ILLEGAL")
+                      #if (has_supertitle) [
+                        #text(
+                          size: 0.8em
+                        )[
+                          #upper(supertitle)
+                        ]#h(0.5em)
                       ]
+                      #upper(type)
+                    ]
+                  ]
+                  // Accessiblity stripes
+                  #let thickness = 0.1em
+                  #place(
+                    horizon + right,
+                    dy: -0.1em,
+                    dx: 0.5em
+                  )[
+                    #rotate(-90deg, reflow: true)[
+                      #if colors.contains(color) {
+                        for i in range(colors.position(e => e == color) + 1) {
+                          if (calc.rem(i, 2) == 0) {
+                            v(thickness * 2, weak: true)
+                          }
+
+                          box(
+                            width: 1em,
+                            height: thickness,
+                            fill: white
+                          )
+                          v(thickness, weak: true)
+                        }
+                      }
                     ]
                   ]
                 ]
-              }
+              ]
+            ]
+          ]
+        ]
+
+        // Value
+        #place(
+          top + left,
+          dy: 0.2em
+        )[
+          #text(
+            size: 8em,
+            weight: "extrabold",
+            fill: white
+          )[
+            #if (value != none) {
+              value
+            } else if (type != "Standing") {
+              type.at(0)
+            }
+          ]
+        ]
+        
+        #place(
+          bottom + right,
+          dy: -0.2em
+        )[
+          #rotate(180deg)[
+            #text(
+              size: 8em,
+              weight: "extrabold",
+              fill: if (color != none) {color} else {black}
+            )[
+              #if (value != none) {
+              value
+            } else if (type != "Standing") {
+              type.at(0)
+            }
             ]
           ]
         ]
@@ -281,7 +231,7 @@
         width: 100% - 1em,
         height: 100% - 1em,
         radius: card_radius - 0.5mm,
-        stroke: if role { 0.3em + black } else { 0.2em + white },
+        stroke: 1em + if role { white } else { black },
         inset: (left: 0.5em, right: 0.5em, top: -0.5em, bottom: -0.5em),
         clip: true
       )[
