@@ -73,12 +73,16 @@
   "Hoarder": "[Goal]Hold " + str(calc.ceil(asset_copy_amount * 0.8)) + " Assets with the same value.",
   "Snitch": "[Goal]Hold " + str(calc.floor(goal_hand_size * 1.5)) + " Cards. (excluding Standing)",
   "Isolationist": "[Goal]Hold only cards without value. (including Standing)",
+  "Tyrant": "[Goal]Hold Threats for all other players.",
+  "Politician": "[Goal]Hold Favours for all other players.",
   "Lobbyist": "[Perk]If you trade this card to another player, they have to discard all their Standing.", // TODO: Make it so that people want to trade Role cards
   "Leach": "[Perk]If someone you have a Pact with wins, you win too. When you loose, you can try to sneak this card out of the game, to win later.",
   "Undead": "[Perk]When you loose, take " + str((standing_card_amount - 1)) + " Standing cards from the draw pile and shuffle it again, then remove this card from the game.",
   "Liar": "[Perk]You only loose when being accused during a trade, while having no Standing. You cannot win without Standing.", // TODO: Figure out how to handle this discretely
   "Officer": "[Perk]Announce to force everyone to give you all their illegal cards.",
   "Speculator": "[Perk]At the end of the game each of your Asset cards is worth 5+1d4. (Throw a dice with 4 sides and add 5)",
+  "Salesperson": "[Perk]Announce to discard all your cards (excluding Standing)",
+  "Banker": "[Perk]Announce to force everyone to give you all their Assets.",
 )
 
 #let role_card_amount = role_descriptions.len()

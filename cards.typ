@@ -169,6 +169,22 @@
                   set text(weight: "extrabold")
                   [#icon("Social")#it]
                 }
+                #show regex("Favour(s?)( card(s?))?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Favour")#it]
+                }
+                #show regex("Hook(s?)( card(s?))?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Hook")#it]
+                }
+                #show regex("Threat(s?)( card(s?))?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Threat")#it]
+                }
+                #show regex("Secret(s?)( card(s?))?"): it => {
+                  set text(weight: "extrabold")
+                  [#icon("Secret")#it]
+                }
                 #show regex("Standing(s?)( card(s?)?)?"): it => {
                   set text(weight: "extrabold")
                   [#icon("Standing")#it]
