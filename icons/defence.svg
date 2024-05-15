@@ -3,12 +3,12 @@
 <svg width="100%" height="100%" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
     <g id="Speech">
         <g id="Speech1" serif:id="Speech" transform="matrix(-1.2,0,0,1.2,1126.4,220.8)">
-            <path d="M805.333,109.333L698.667,322.667L698.667,376L752,456L272,456L218.667,376L218.667,322.667L325.333,109.333L325.333,56L272,-24L752,-24L805.333,56L805.333,109.333Z" style="fill:rgb(254,255,254);"/>
+            <path d="M778.667,56L725.333,376L778.667,456L298.667,456L245.333,376L298.667,56L245.333,-24L725.333,-24L778.667,56Z" style="fill:rgb(254,255,254);"/>
         </g>
-        <path d="M864,672L800,768L224,768L288,672L736,704L864,672Z"/>
-        <path d="M288,256L160,288L224,192L800,192L736,288L288,256Z"/>
+        <path d="M832,672L768,768L192,768L256,672L704,704L832,672Z"/>
+        <path d="M320,256L192,288L256,192L832,192L768,288L320,256Z"/>
         <g id="Defence" transform="matrix(0.4,0,0,0.4,307.2,361.6)">
-            <path d="M712,616L352,496L32,-24L432,16L752,-64L912,456L712,616Z"/>
+            <path d="M512,656L192,496L152,16L512,56L872,16L832,496L512,656Z"/>
         </g>
     </g>
 </svg>
