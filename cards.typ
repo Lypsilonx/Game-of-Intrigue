@@ -133,7 +133,11 @@
                 text(supertitle, size: 0.7em)
                 v(-1em)
               }
-              #type
+              #if (type == "") {
+                " "
+              } else {
+                type
+              }
             ]
             #v(0.5em)
           ],
@@ -209,7 +213,11 @@
                     #it.text.slice(1, -1)
                     #v(-0.5em)
                   ]
-                  role_descriptions.at(type)
+                  if (type == "") {
+                    " "
+                  } else {
+                    role_descriptions.at(type)
+                  }
                 } else {
                   descriptions.at(type)
                 }
@@ -363,8 +371,8 @@
 #let card_backs = ()
 #for color in colors {
   for _ in range(standing_card_amount) {
-    cards.push(render_card("Standing"))
-    card_backs.push(render_card_back())
+    cards.push(render_card("Standing", value: standing_card_value))
+    card_backs.push(render_card_back(value: standing_card_value))
   }
 }
 #for color in colors {
@@ -420,6 +428,11 @@
 }
 #for role in role_descriptions.keys() {
   cards.push(render_card(role, supertitle: "Role"))
+  card_backs.push(render_card_back(role: true))
+}
+
+#for _ in range(4) {
+  cards.push(render_card("", supertitle: "Role"))
   card_backs.push(render_card_back(role: true))
 }
 

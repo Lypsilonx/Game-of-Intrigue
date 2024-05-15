@@ -1,6 +1,7 @@
 {
   "hand_card_amount": 5,
   "standing_card_amount": 3,
+  "standing_card_value": 10,
 
   "asset_copy_amount": 10,
   "asset_value_range": [5, 9],

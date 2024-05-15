@@ -68,8 +68,13 @@
           #symbol
         ]
         #if type == "Standing" [
-          #v(-1em)
-          #scale(origin: center + horizon, x: center_symbol_scale, y: center_symbol_scale, reflow: true)[
+          #v(-5em)
+          #scale(
+            origin: center + horizon,
+            x: center_symbol_scale,
+            y: center_symbol_scale,
+            reflow: true,
+          )[
             #rotate(180deg)[
               #symbol_color
             ]
@@ -128,7 +133,7 @@
                 #box(
                   width: 100%,
                   height: 0.8em,
-                  inset: if (value != none or type != "Standing") {(right: 1em, left: 3em)} else {(right: 1em, left: 1em)}
+                  inset: (right: 1em, left: 3em)
                 )[
                   #rotate(180deg, reflow: true)[
                     #text(
@@ -187,7 +192,7 @@
           )[
             #if (value != none) {
               value
-            } else if (type != "Standing") {
+            } else if (type != "") {
               type.at(0)
             }
           ]
@@ -205,7 +210,7 @@
             )[
               #if (value != none) {
               value
-            } else if (type != "Standing") {
+            } else if (type != "") {
               type.at(0)
             }
             ]
@@ -313,8 +318,8 @@
 #let card_backs = ()
 #for color in colors {
   for _ in range(standing_card_amount) {
-    cards.push(render_card("Standing"))
-    card_backs.push(render_card_back())
+    cards.push(render_card("Standing", value: standing_card_value))
+    card_backs.push(render_card_back(value: standing_card_value))
   }
 }
 #for color in colors {
@@ -370,6 +375,11 @@
 }
 #for role in role_descriptions.keys() {
   cards.push(render_card(role, supertitle: "Role"))
+  card_backs.push(render_card_back(role: true))
+}
+
+#for _ in range(4) {
+  cards.push(render_card("", supertitle: "Role"))
   card_backs.push(render_card_back(role: true))
 }
 

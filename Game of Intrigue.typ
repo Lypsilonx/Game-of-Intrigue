@@ -368,6 +368,7 @@ Tipp: Keep your cards hidden as long as possible.\ You almost never have to show
 = Cards <cards>
 == Types <types>
 === Standing <standing>
+_Value #(standing_card_value)_
 
 You loose when all your Standing is lost.
 === Pact <pact>
@@ -383,13 +384,13 @@ If you have someone else's Pact card you cannot:
 
 === Asset <asset>
 _Can be Illegal_\
-_Value #(asset_value_range.at(0))-#(asset_value_range.at(1))X_
+_Value #(asset_value_range.at(0))-#(asset_value_range.at(1))_
 
 Assets are worth their value. Thy do not have any special abilities.
 
 === Influence <influence>
 _Can be Illegal_\
-_Value #(influence_value_range.at(0))-#(influence_value_range.at(1))X_
+_Value #(influence_value_range.at(0))-#(influence_value_range.at(1))_
 
 Influence cards must be traded openly and cannot be declined.
 
@@ -397,10 +398,10 @@ Influence cards must be traded openly and cannot be declined.
 === Social <social>
 _Colored_\
 _Can be Illegal_\
-_Value #(calc.min(..social_cards.map(card_data => card_data.value)))-#(calc.max(..social_cards.map(card_data => card_data.value)))X_
+_Value #(calc.min(..social_cards.map(card_data => card_data.value)))-#(calc.max(..social_cards.map(card_data => card_data.value)))_
 
 A social card can be a Secret, Hook, Threat or Favour. It can be announced during the Announcement phase to make the player with that Color…
-  - Favour: Trade with you now (Follow the steps in the Trade phase)
+  - Favour: Give you a card of a type of your choice (except Standing or Roles) from their hand. If they have that type of card they have to give one to you.
   - Hook: Discard 1 Standing
   - Threat: Pay a fine to you.
   - Secret: Show everyone how many illegal cards they have (Visible on back)
@@ -442,7 +443,11 @@ If no card is illegal:
   2. The trade goes on.
 
 == Paying a fine <fine>
-You have to let the other player draw a card from your hand or personal pile (excluding roles)
+You have to let the other player draw a card from your hand or personal pile.
+You can choose to protect either #standing_card_amount cards from your hand (by
+putting them aside) or your personal pile from being drawn from. If you have
+less than #standing_card_amount cards in your hand, you cannot protect any
+cards. If a Pact is drawn it is removed from the game.
 
 == Removed from the game <removed_from_game>
 Put them back in the box. They are not to be used this game anymore.
@@ -522,19 +527,19 @@ Put them back in the box. They are not to be used this game anymore.
   [
     - #player_count Color Tokens
     - #role_card_amount x Role
-    - #player_count x #standing_card_amount Standing
+    - #player_count x #standing_card_amount Standing (#standing_card_value)
     - Each Color (#player_count times):\
       - 1 x Pact
       - #(player_count - 3) x Pact (illegal)
       #for card_data in social_cards {
-        [- 1 x #(card_data.type) (#(card_data.value)X#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
+        [- 1 x #(card_data.type) (#(card_data.value)#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
       }
-    - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X)
-    - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1))X, illegal)
-    - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1))X)
-    - #(testimony_copy_amount * testimony_values.len()) x Testimony (#(calc.min(..testimony_values))X-#(calc.max(..testimony_values))X)
-    - #(rebrand_copy_amount * rebrand_values.len()) x Rebrand (#(calc.min(..rebrand_values))X-#(calc.max(..rebrand_values))X)
-    - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))X-#(calc.max(..defence_values))X)
+    - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1))  Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)))
+    - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)), illegal)
+    - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1)))
+    - #(testimony_copy_amount * testimony_values.len()) x Testimony (#(calc.min(..testimony_values))-#(calc.max(..testimony_values)))
+    - #(rebrand_copy_amount * rebrand_values.len()) x Rebrand (#(calc.min(..rebrand_values))-#(calc.max(..rebrand_values)))
+    - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))-#(calc.max(..defence_values)))
   ],
   [
     #let colored_card_count = player_count * ((player_count - 2) + social_cards.len())

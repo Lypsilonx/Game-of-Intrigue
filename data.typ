@@ -23,6 +23,7 @@
 #let settings_json = json("game_settings.json")
 #let hand_card_amount = settings_json.hand_card_amount
 #let standing_card_amount = settings_json.standing_card_amount
+#let standing_card_value = settings_json.standing_card_value
 
 #let asset_copy_amount = settings_json.asset_copy_amount
 #let asset_value_range = (settings_json.asset_value_range.at(0), settings_json.asset_value_range.at(1))
@@ -55,7 +56,7 @@
   "Pact": "Symbolizes a pact with the [C] player. Removed from the game when discarded.",
   "Asset": "Worth [X] (Value)",
   "Influence": "Trade openly.\nCannot be declined.",
-  "Favour": "Announce to force the [C] player to trade with you.",
+  "Favour": "Announce to ask the [C] player for a card. (excluding Standing and Roles)",
   "Hook": "Announce to make the [C] player discard 1 Standing.",
   "Threat": "Announce to make the [C] player pay a fine to you.",
   "Secret": "Announce to force the [C] player to tell everyone how many illegal cards they have.",
