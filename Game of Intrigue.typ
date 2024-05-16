@@ -464,7 +464,7 @@ Put them back in the box. They are not to be used this game anymore.
   [
     #place(
       scale(card_example_scale, reflow: true)[
-        #render_card_back(value: 99, illegal: true, cut_guide: false)
+        #render_card_back(value: 99, illegal: true)
       ]
     )
     #place(
@@ -491,7 +491,7 @@ Put them back in the box. They are not to be used this game anymore.
   [
     #place(
       scale(card_example_scale, reflow: true)[
-        #render_card_back(cut_guide: false)
+        #render_card_back()
       ]
     )
     #place(

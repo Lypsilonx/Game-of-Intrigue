@@ -1,13 +1,13 @@
 #import "data.typ": *
+#import "render_foldable.typ": *
 
-#let render_card(type, value: none, illegal: false, color: none, cut_guide: true, supertitle: none) = {
+#let render_card(type, value: none, illegal: false, color: none, supertitle: none) = {
   let has_supertitle = supertitle != none and display_supertitle
   let is_role = supertitle == "Role"
   set text(font: "Proxima Nova", weight: "medium")
   box(
     width: card_width,
     height: card_height,
-    stroke: if cut_guide {(thickness: 0.1pt, dash: "dashed")} else {none},
     radius: card_cut_radius,
     clip: true,
   )[
@@ -163,6 +163,7 @@
               #text(
               )[
                 #show "[X]": it => if (value == none) {"VALUE_MISSING"} else {str(value)}
+                #show "_s": it => if (value == 1) {""} else {"s"}
                 #show "[C]": it => if (color == none) {"COLOR_MISSING"} else {color_to_string(color)}
 
                 #show regex("Social( card(s?))"): it => {
@@ -217,7 +218,7 @@
                   set text(weight: "extrabold")
                   [#icon("Token")#it]
                 }
-                #show regex("illegal((ly)|( card(s?)))?"): it => {
+                #show regex("illegal((ly)|( card((_?)s?)))?"): it => {
                   set text(weight: "bold", fill: white)
                    " " + box(it, fill: red, outset: 0.2em) + " "
                 }
@@ -290,12 +291,11 @@
   ]
 }
 
-#let render_card_back(value: none, illegal: false, cut_guide: true, role: false) = {
+#let render_card_back(value: none, illegal: false, role: false) = {
   set text(font: "Proxima Nova", weight: "medium")
   box(
     width: card_width,
     height: card_height,
-    stroke: if cut_guide {(thickness: 0.1pt, dash: "dashed")} else {none},
     radius: card_cut_radius,
     clip: true,
     fill: if role {white} else {black},
@@ -381,104 +381,5 @@
   ]
 }
 
-
-// Cards
-#let cards = ()
-#let card_backs = ()
-#for color in colors {
-  for _ in range(standing_card_amount) {
-    cards.push(render_card("Standing", value: standing_card_value))
-    card_backs.push(render_card_back(value: standing_card_value))
-  }
-}
-#for color in colors {
-  cards.push(render_card("Token", color: color))
-  card_backs.push(render_card_back())
-  cards.push(render_card("Pact", color: color))
-  card_backs.push(render_card_back())
-  for _ in range(player_count - 3) {
-    cards.push(render_card("Pact", color: color, illegal: true))
-    card_backs.push(render_card_back(illegal: true))
-  }
-
-  for card_data in social_cards {
-    cards.push(render_card(card_data.type, value: card_data.value, color: color, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}, supertitle: "Social"))
-    card_backs.push(render_card_back(value: card_data.value, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}))
-  }
-}
-#for value in range(asset_value_range.at(0), asset_value_range.at(1) + 1) {
-  for _ in range(calc.ceil(asset_copy_amount / 2)) {
-    cards.push(render_card("Asset", value: value))
-    card_backs.push(render_card_back(value: value))
-  }
-}
-#for value in range(asset_value_range.at(0), asset_value_range.at(1) + 1) {
-  for _ in range(calc.floor(asset_copy_amount / 2)) {
-    cards.push(render_card("Asset", value: value, illegal: true))
-    card_backs.push(render_card_back(value: value, illegal: true))
-  }
-}
-#for value in range(influence_value_range.at(0), influence_value_range.at(1) + 1) {
-  for _ in range(influence_copy_amount) {
-    cards.push(render_card("Influence", value: value))
-    card_backs.push(render_card_back(value: value))
-  }
-}
-#for value in testimony_values {
-  for _ in range(testimony_copy_amount) {
-    cards.push(render_card("Testimony", value: value, supertitle: "Speech"))
-    card_backs.push(render_card_back(value: value))
-  }
-}
-#for value in rebrand_values {
-  for _ in range(rebrand_copy_amount) {
-    cards.push(render_card("Rebrand", value: value, supertitle: "Speech"))
-    card_backs.push(render_card_back(value: value))
-  }
-}
-#for value in defence_values {
-  for _ in range(defence_copy_amount) {
-    cards.push(render_card("Defence", value: value, supertitle: "Speech"))
-    card_backs.push(render_card_back(value: value))
-  }
-}
-#for role in role_descriptions.keys() {
-  cards.push(render_card(role, supertitle: "Role"))
-  card_backs.push(render_card_back(role: true))
-}
-
-#for _ in range(4) {
-  cards.push(render_card("", supertitle: "Role"))
-  card_backs.push(render_card_back(role: true))
-}
-
 // Render
-#set page(
-  "a4",
-  // width: (card_width + cut_gutter) * cards_on_page.at(0) + cut_gutter,
-  // height: (card_height + cut_gutter) * cards_on_page.at(1) + cut_gutter,
-  margin: 0%,
-)
-
-#set align(center + horizon)
-
-// #let cards_on_page = (3, 3)
-// #let cut_gutter = 1em
-// #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..cards)
-// #pagebreak()
-// #grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), gutter: cut_gutter, ..card_backs)
-
-#let cards_on_page = (2, 4)
-#let cut_gutter = 1em
-#set page(background: [
-  #place(center + horizon)[
-    #box(width: card_height * 2, height: 100%, stroke: (thickness: 0.1pt, dash: "dashed"), fill: white)
-  ]
-  #place(center + horizon)[
-    #box(width: 100%, height: card_width * cards_on_page.at(1), stroke: (thickness: 0.1pt, dash: "dashed"), fill: white)
-  ]
-])
-#grid(rows: cards_on_page.at(1), columns: cards_on_page.at(0), ..cards.enumerate().map(it => (
-  rotate(90deg,[#it.at(1)], reflow: true),
-  rotate(270deg,[#card_backs.at(it.at(0))], reflow: true)
-)).flatten())
+#render(render_card, render_card_back)

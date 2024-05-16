@@ -1,4 +1,4 @@
-#let version = "0.3.3"
+#let version = "1.0.0"
 
 // Game settings
 #let colors = (
@@ -60,8 +60,8 @@
   "Hook": "Announce to make the [C] player discard 1 Standing.",
   "Threat": "Announce to make the [C] player pay a fine to you.",
   "Secret": "Announce to force the [C] player to tell everyone how many illegal cards they have.",
-  "Testimony": "When announced you can discard [X] illegal cards from your hand.",
-  "Rebrand": "When announced you can discard [X] legal cards from your hand.",
+  "Testimony": "When announced you can discard [X] illegal card_s from your hand.",
+  "Rebrand": "When announced you can discard [X] legal card_s from your hand.",
   "Defence": "When announced you are immune to Threat cards up to a Value of [X].",
 )
 
