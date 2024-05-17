@@ -27,13 +27,9 @@ jobs:
           name: Game of Intrigue
           path: "*.pdf"
 
-      - name: Get current date
-        id: date
-        run: echo "DATE=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_ENV
-
       - name: Release
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
-          name: "${{ github.ref_name }} — ${{ env.DATE }}"
-          files: main.pdf
+          name: "${{ github.ref_name }}"
+          files: "*.pdf"
