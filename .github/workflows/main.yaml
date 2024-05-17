@@ -1,0 +1,43 @@
+# github action main.yaml file
+# on applying a v* tag, the workflow will be triggered and...
+# - render cards.typ, Game of Intrigue.typ and cards_abstract.typ to .pdf (with typst)
+# - put all the .pdf files in a new release
+name: Build and Release
+on: [push, workflow_dispatch]
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Typst
+        uses: lvignoli/typst-action@main
+        env:
+          TYPST_FONT_PATHS: ./fonts
+        with:
+          source_file: |
+            cards.typ
+            cards_abstract.typ
+            Game of Intrigue.typ
+
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v4
+        with:
+          name: Game of Intrigue
+          path: "*.pdf"
+
+      - name: Get current date
+        id: date
+        run: echo "DATE=$(date +%Y-%m-%d-%H:%M)" >> $GITHUB_ENV
+
+      - name: Release
+        uses: softprops/action-gh-release@v2
+        if: github.ref_type == 'tag'
+        with:
+          name: "${{ github.ref_name }} — ${{ env.DATE }}"
+          files: main.pdf

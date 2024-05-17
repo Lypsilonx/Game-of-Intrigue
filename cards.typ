@@ -4,7 +4,7 @@
 #let render_card(type, value: none, illegal: false, color: none, supertitle: none) = {
   let has_supertitle = supertitle != none and display_supertitle
   let is_role = supertitle == "Role"
-  set text(font: "Proxima Nova", weight: "medium")
+  set text(font: "Inter Tight", weight: "medium")
   box(
     width: card_width,
     height: card_height,
@@ -213,7 +213,7 @@
 }
 
 #let render_card_back(value: none, illegal: false, role: false) = {
-  set text(font: "Proxima Nova", weight: "medium")
+  set text(font: "Inter Tight", weight: "medium")
   box(
     width: card_width,
     height: card_height,

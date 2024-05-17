@@ -19,7 +19,7 @@
   strong(it)
 }
 
-#set text(font: "Proxima Nova")
+#set text(font: "Inter Tight")
 #set page(
   "a5",
   background: locate(
