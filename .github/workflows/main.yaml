@@ -1,7 +1,3 @@
-# github action main.yaml file
-# on applying a v* tag, the workflow will be triggered and...
-# - render cards.typ, Game of Intrigue.typ and cards_abstract.typ to .pdf (with typst)
-# - put all the .pdf files in a new release
 name: Build and Release
 on: [push, workflow_dispatch]
 
