@@ -4,7 +4,7 @@
 #let render_card(type, value: none, illegal: false, color: none, cut_guide: true, supertitle: none) = {
   let has_supertitle = supertitle != none and display_supertitle
   let is_role = supertitle == "Role"
-  set text(font: "Proxima Nova", weight: "medium")
+  set text(font: "Inter Tight", weight: "medium")
   box(
     width: card_width,
     height: card_height,
@@ -223,7 +223,7 @@
 }
 
 #let render_card_back(value: none, illegal: false, cut_guide: true, role: false) = {
-  set text(font: "Proxima Nova", weight: "medium")
+  set text(font: "Inter Tight", weight: "medium")
   box(
     width: card_width,
     height: card_height,
@@ -314,4 +314,4 @@
 }
 
 // Render
-#render_foldable(render_card, render_card_back)
+#render(if sys.inputs.keys().contains("render_type") {sys.inputs.render_type} else {"single"}, render_card, render_card_back)

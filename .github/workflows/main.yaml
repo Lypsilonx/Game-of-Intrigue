@@ -6,30 +6,89 @@ permissions:
 
 jobs:
   build:
+    env:
+      TYPST_FONT_PATHS: ./fonts
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Typst
-        uses: lvignoli/typst-action@main
-        env:
-          TYPST_FONT_PATHS: ./fonts
+      - name: Render Rules
+        uses: leana8959/typst-action@main
+        with:
+          source_file: |
+            Game of Intrigue.typ
+          options: |
+            --input=render_type=single
+      - run: |
+          mkdir -p out
+          mv Game\ of\ Intrigue.pdf out/Game\ of\ Intrigue.pdf
+
+      - name: Render Single
+        uses: leana8959/typst-action@main
         with:
           source_file: |
             cards.typ
             cards_abstract.typ
-            Game of Intrigue.typ
+          options: |
+            --input=render_type=single
 
-      - name: Upload PDF file
+      - run: |
+          mkdir -p out/cards/single
+          mv cards.pdf out/cards/single/cards.pdf
+          mv cards_abstract.pdf out/cards/single/cards_abstract.pdf
+
+      - name: Render Single Foldable
+        uses: leana8959/typst-action@main
+        with:
+          source_file: |
+            cards.typ
+            cards_abstract.typ
+          options: |
+            --input=render_type=single_foldable
+
+      - run: |
+          mkdir -p out/cards/single_foldable
+          mv cards.pdf out/cards/single_foldable/cards.pdf
+          mv cards_abstract.pdf out/cards/single_foldable/cards_abstract.pdf
+
+      - name: Render Foldable
+        uses: leana8959/typst-action@main
+        with:
+          source_file: |
+            cards.typ
+            cards_abstract.typ
+          options: |
+            --input=render_type=foldable
+
+      - run: |
+          mkdir -p out/cards/foldable
+          mv cards.pdf out/cards/foldable/cards.pdf
+          mv cards_abstract.pdf out/cards/foldable/cards_abstract.pdf
+
+      - name: Render Double Sided
+        uses: leana8959/typst-action@main
+        with:
+          source_file: |
+            cards.typ
+            cards_abstract.typ
+          options: |
+            --input=render_type=double_sided
+
+      - run: |
+          mkdir -p out/cards/double_sided
+          mv cards.pdf out/cards/double_sided/cards.pdf
+          mv cards_abstract.pdf out/cards/double_sided/cards_abstract.pdf
+
+      - name: Upload Files
         uses: actions/upload-artifact@v4
         with:
           name: Game of Intrigue
-          path: "*.pdf"
+          path: "out/**"
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
           name: "${{ github.ref_name }}"
-          files: "*.pdf"
+          files: "out/**"

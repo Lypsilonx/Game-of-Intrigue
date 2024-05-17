@@ -295,3 +295,15 @@
     }
   ).flatten())
 }
+
+#let render(render_type, render_card, render_card_back) = {
+  if render_type == "single" {
+    render_single(render_card, render_card_back)
+  } else if render_type == "single_foldable" {
+    render_single_foldable(render_card, render_card_back)
+  } else if render_type == "foldable" {
+    render_foldable(render_card, render_card_back)
+  } else if render_type == "double_sided" {
+    render_double_sided(render_card, render_card_back)
+  }
+}

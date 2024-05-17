@@ -303,4 +303,4 @@
 }
 
 // Render
-#render_foldable(render_card, render_card_back)
+#render(if sys.inputs.keys().contains("render_type") {sys.inputs.render_type} else {"single"}, render_card, render_card_back)
