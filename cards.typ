@@ -1,5 +1,5 @@
 #import "data.typ": *
-#import "render_foldable.typ": *
+#import "render.typ": *
 
 #let render_card(type, value: none, illegal: false, color: none, supertitle: none) = {
   let has_supertitle = supertitle != none and display_supertitle
@@ -162,86 +162,7 @@
             #align(horizon)[
               #text(
               )[
-                #show "[X]": it => if (value == none) {"VALUE_MISSING"} else {str(value)}
-                #show "_s": it => if (value == 1) {""} else {"s"}
-                #show "[C]": it => if (color == none) {"COLOR_MISSING"} else {color_to_string(color)}
-
-                #show regex("Social( card(s?))"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Social")#it]
-                }
-                #show regex("Favour(s?)( card(s?))?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Favour")#it]
-                }
-                #show regex("Hook(s?)( card(s?))?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Hook")#it]
-                }
-                #show regex("Threat(s?)( card(s?))?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Threat")#it]
-                }
-                #show regex("Secret(s?)( card(s?))?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Secret")#it]
-                }
-                #show regex("Standing(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Standing")#it]
-                }
-                #show regex("Pact(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Pact")#it]
-                }
-                #show regex("Asset(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Asset")#it]
-                }
-                #show regex("Influence(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Influence")#it]
-                }
-                #show regex("Testimony(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Testimony")#it]
-                }
-                #show regex("Rebrand(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Rebrand")#it]
-                }
-                #show regex("Role(s?)( card(s?)?)?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Role")#it]
-                }
-                #show regex("Color( Token)?"): it => {
-                  set text(weight: "extrabold")
-                  [#icon("Token")#it]
-                }
-                #show regex("illegal((ly)|( card((_?)s?)))?"): it => {
-                  set text(weight: "bold", fill: white)
-                   " " + box(it, fill: red, outset: 0.2em) + " "
-                }
-
-                #let desc = if (is_role) {
-                  set align(top)
-                  show regex("\[(Goal|Perk)\]"): it => text(weight: "extrabold", size: 1.5em)[
-                    #v(0.5em)
-                    #it.text.slice(1, -1)
-                    #v(-0.5em)
-                  ]
-                  if (type == "") {
-                    " "
-                  } else {
-                    role_descriptions.at(type)
-                  }
-                } else {
-                  descriptions.at(type)
-                }
-                #desc
-                #if illegal {
-                  "\nillegal"
-                }
+                #get_description(type, value, illegal, color, supertitle)
               ]
             ]
             #place(bottom + center)[
@@ -382,4 +303,4 @@
 }
 
 // Render
-#render(render_card, render_card_back)
+#render_foldable(render_card, render_card_back)

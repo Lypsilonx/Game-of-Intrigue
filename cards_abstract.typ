@@ -1,5 +1,5 @@
 #import "data.typ": *
-#import "render_foldable.typ": *
+#import "render.typ": *
 
 #let render_card(type, value: none, illegal: false, color: none, cut_guide: true, supertitle: none) = {
   let has_supertitle = supertitle != none and display_supertitle
@@ -314,4 +314,4 @@
 }
 
 // Render
-#render(render_card, render_card_back)
+#render_foldable(render_card, render_card_back)
