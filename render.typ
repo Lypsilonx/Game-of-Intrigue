@@ -63,6 +63,9 @@
       " " + box(it, fill: red, outset: 0.2em) + " "
   }
 
+  set text(font: "Inter Tight", weight: "regular")
+  set par(leading: 0.5em)
+
   if (is_role) {
     set align(top)
     show regex("\[(Goal|Perk)\]"): it => text(weight: "extrabold", size: 1.5em)[

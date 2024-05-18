@@ -187,7 +187,7 @@
           dy: 0.2em
         )[
           #text(
-            size: 8em,
+            size: 7em,
             weight: "extrabold",
             fill: white
           )[
@@ -205,7 +205,7 @@
         )[
           #rotate(180deg)[
             #text(
-              size: 8em,
+              size: 7em,
               weight: "extrabold",
               fill: if (color != none) {color} else {black}
             )[
@@ -256,7 +256,7 @@
                 #set align(center + top)
                 #let secret_gradient = if role { gradient.linear(..colors, angle: 45deg, relative: "parent")} else { white }
                 #v(2.5em)
-                #text(font: "Monaco", fill: secret_gradient)[
+                #text(font: "Chivo Mono", fill: secret_gradient)[
                   #repeat("GAME OF INTRIGUE")
                   #repeat("OF INTRIGUE GAME")
                   #repeat("INTRIGUE GAME OF")
@@ -287,7 +287,7 @@
                   INTRIGUE
                 ]
                 #v(2em, weak: true)
-                #text(font: "Monaco", fill: secret_gradient)[
+                #text(font: "Chivo Mono", fill: secret_gradient)[
                   #repeat("GAME OF INTRIGUE")
                   #repeat("OF INTRIGUE GAME")
                   #repeat("INTRIGUE GAME OF")

@@ -21,8 +21,8 @@ jobs:
           options: |
             --input=render_type=single
       - run: |
-          mkdir -p out
-          mv Game\ of\ Intrigue.pdf out/Game\ of\ Intrigue.pdf
+          mkdir -p assets
+          mv Game\ of\ Intrigue.pdf assets/Game\ of\ Intrigue.pdf
 
       - name: Render Single
         uses: leana8959/typst-action@main
@@ -34,9 +34,9 @@ jobs:
             --input=render_type=single
 
       - run: |
-          mkdir -p out/cards/single
-          mv cards.pdf out/cards/single/cards.pdf
-          mv cards_abstract.pdf out/cards/single/cards_abstract.pdf
+          mkdir -p assets/cards/single
+          mv cards.pdf assets/cards/single/cards.pdf
+          mv cards_abstract.pdf assets/cards/single/cards_abstract.pdf
 
       - name: Render Single Foldable
         uses: leana8959/typst-action@main
@@ -48,9 +48,9 @@ jobs:
             --input=render_type=single_foldable
 
       - run: |
-          mkdir -p out/cards/single_foldable
-          mv cards.pdf out/cards/single_foldable/cards.pdf
-          mv cards_abstract.pdf out/cards/single_foldable/cards_abstract.pdf
+          mkdir -p assets/cards/single_foldable
+          mv cards.pdf assets/cards/single_foldable/cards.pdf
+          mv cards_abstract.pdf assets/cards/single_foldable/cards_abstract.pdf
 
       - name: Render Foldable
         uses: leana8959/typst-action@main
@@ -62,9 +62,9 @@ jobs:
             --input=render_type=foldable
 
       - run: |
-          mkdir -p out/cards/foldable
-          mv cards.pdf out/cards/foldable/cards.pdf
-          mv cards_abstract.pdf out/cards/foldable/cards_abstract.pdf
+          mkdir -p assets/cards/foldable
+          mv cards.pdf assets/cards/foldable/cards.pdf
+          mv cards_abstract.pdf assets/cards/foldable/cards_abstract.pdf
 
       - name: Render Double Sided
         uses: leana8959/typst-action@main
@@ -76,19 +76,23 @@ jobs:
             --input=render_type=double_sided
 
       - run: |
-          mkdir -p out/cards/double_sided
-          mv cards.pdf out/cards/double_sided/cards.pdf
-          mv cards_abstract.pdf out/cards/double_sided/cards_abstract.pdf
+          mkdir -p assets/cards/double_sided
+          mv cards.pdf assets/cards/double_sided/cards.pdf
+          mv cards_abstract.pdf assets/cards/double_sided/cards_abstract.pdf
 
       - name: Upload Files
         uses: actions/upload-artifact@v4
         with:
           name: Game of Intrigue
-          path: "out/**"
+          path: "assets/**"
+
+      - name: Zip for Release
+        # zip everything in the assets folder into assets.zip
+        run: zip -r assets.zip assets
 
       - name: Release
         uses: softprops/action-gh-release@v2
         if: github.ref_type == 'tag'
         with:
           name: "${{ github.ref_name }}"
-          files: "out/**"
+          files: "assets.zip"
