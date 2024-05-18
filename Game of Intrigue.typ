@@ -254,6 +254,7 @@
   Game of Intrigue
 ]\
 Version #version
+#set par(leading: 0.5em)
 #outline(title: "Chapters", indent: auto)
 
 #pagebreak()
@@ -305,7 +306,7 @@ A trade happens between two players:
   3. If any player wants to object to the trade they can now do so. Upon an accusation the legality of the traded cards is checked (see Legality check)
   4. If both parties decided to trade (and no illegal cards were found in the previous step) they each take the card offered to them.
   5. Both players now qualify for the following phases.
-
+#pagebreak()
 Example:
 
 #show regex("C[0-9]\([a-zA-Z ]*\)"): it => {
@@ -441,7 +442,7 @@ If any traded card is illegal:
 If no card is illegal:
   1. The accusing player will have to pay a fine to one of the trading players (accusors choice)
   2. The trade goes on.
-
+#pagebreak()
 == Paying a fine <fine>
 You have to let the other player draw a card from your hand or personal pile.
 You can choose to protect either #standing_card_amount cards from your hand (by
@@ -469,7 +470,7 @@ Put them back in the box. They are not to be used this game anymore.
     )
     #place(
       dx: 3.85em * card_example_scale,
-      dy: 4.05em * card_example_scale,
+      dy: 3.9em * card_example_scale,
     )[
       #rotate(-skew_angle)[
         #skew(-skew_angle)[
@@ -479,7 +480,7 @@ Put them back in the box. They are not to be used this game anymore.
     ]
     #place(
       dx: 6.17em * card_example_scale,
-      dy: 15.37em * card_example_scale,
+      dy: 14.9em * card_example_scale,
     )[
       #rotate(-skew_angle)[
         #skew(-skew_angle)[
@@ -496,7 +497,7 @@ Put them back in the box. They are not to be used this game anymore.
     )
     #place(
       dx: 3.85em * card_example_scale,
-      dy: 4.05em * card_example_scale,
+      dy: 3.9em * card_example_scale,
     )[
       #rotate(-skew_angle)[
         #skew(-skew_angle)[
@@ -506,7 +507,7 @@ Put them back in the box. They are not to be used this game anymore.
     ]
     #place(
       dx: 6.17em * card_example_scale,
-      dy: 15.37em * card_example_scale,
+      dy: 14.9em * card_example_scale,
     )[
       #rotate(-skew_angle)[
         #skew(-skew_angle)[
@@ -521,6 +522,7 @@ Put them back in the box. They are not to be used this game anymore.
 #pagebreak()
 = Material <material>
 #linebreak()
+#set par(leading: 1em)
 #grid(
   columns: 2,
   gutter: 1em,
