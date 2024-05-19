@@ -45,9 +45,19 @@ steps = [
     }
   },
   {
+    'name': 'Render Box',
+    'uses': 'leana8959/typst-action@main',
+    'with': {
+      'source_file': LS("""\
+        box.typ
+      """)
+    }
+  },
+  {
     'run': LS("""\
       mkdir -p assets
       mv Game\\ of\\ Intrigue.pdf assets/Game\\ of\\ Intrigue.pdf
+      mv box.pdf assets/box.pdf
     """)
   }
 ]
@@ -113,3 +123,6 @@ yaml = ruamel.yaml.YAML()
 yaml.indent(mapping=2, sequence=4, offset=2)
 with open('.github/workflows/main.yaml', 'w') as yaml_file:
   yaml.dump(d, yaml_file)
+
+# add to git commit
+os.system('git add .github/workflows/main.yaml')

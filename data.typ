@@ -1,4 +1,4 @@
-#let version = "1.0.1"
+#let version = "1.0.2"
 
 // Game settings
 #let colors = (
@@ -87,6 +87,10 @@
 
 #let role_card_amount = role_descriptions.len()
 
+#let colored_card_count = player_count * ((player_count - 2) + social_cards.len())
+#let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * testimony_values.len() + rebrand_copy_amount * rebrand_values.len() + defence_copy_amount * defence_values.len()
+#let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount + standing_card_amount * player_count
+
 #let symbols = (
   "Token": "token.svg",
   "Standing": "standing.svg",
@@ -127,4 +131,93 @@
   rotate(phi,scale(x: sx*100%, y: sy*100%,rotate(theta,body)))
 }
 
-#let icon(name, color: none, color2: black, width: 1.2em, height: 1.2em, side_distance: 0.4em) = [#h(side_distance/2)#box(image.decode(read("icons/" + symbols.at(name)).replace("rgb(254,255,254)", if color == none { gray } else { color }.to-hex()).replace("rgb(0,0,0)", color2.to-hex()), width: width, height: height), inset: -0.3em)#h(side_distance)]
+#let icon(name, color: none, color2: black, width: 1.2em, height: 1.2em, side_distance: 0.4em) = [
+  #h(side_distance/2)#box(
+    inset: -0.3em,
+    image.decode(
+      width: width,
+      height: height,
+      read("icons/" + symbols.at(name))
+      .replace(
+        "rgb(254,255,254)",
+        if color == none {
+          gray
+        } else {
+          color
+        }.to-hex()
+      )
+      .replace(
+        "rgb(0,0,0)",
+        color2.to-hex()
+      )
+    )
+  )#h(side_distance)
+]
+
+#let logo_text = [
+  #text(
+    weight: "extrabold",
+    size: 5em,
+    fill: white
+  )[
+    GAME
+    #text(
+      weight: "bold",
+      size: 0.8em
+    )[
+      #h(-0.2em)
+      of\
+    ]
+    INTRIGUE
+  ]\
+]
+
+#let icon_banner = [
+  #box(
+    width: 150%
+  )[
+    #grid(
+      rows: 1,
+      columns: (1fr) * 7,
+      fill: white,
+    )[
+      #icon("Pact", width: 5em, height: 5em, color: red)
+      #icon("Asset", width: 5em, height: 5em, color: orange)
+      #icon("Influence", width: 5em, height: 5em, color: yellow)
+      #icon("Social", width: 5em, height: 5em, color: green)
+      #icon("Speech", width: 5em, height: 5em, color: blue)
+      #icon("Role", width: 5em, height: 5em, color: purple)
+    ]
+  ]
+]
+
+#let logo(subtitle: true, banner: false) = [
+  #rotate(-skew_angle)[
+    #skew(-skew_angle)[
+      #logo_text
+      #if subtitle [
+        #text(
+          weight: "extrabold",
+          size: 2em,
+          fill: white
+        )[
+        a game about\ being an asshole
+        ]
+      ]
+      #if banner [ 
+        #v(2em)
+        #icon_banner
+      ]
+    ]
+  ]
+]
+
+#let outline_text = [
+  In the Game of Intrigue, you compete against at least two other players. You draw cards and trade them with other players to gain an advantage.
+
+  The most important cards are the Standing cards. If you loose all your Standing cards you are eliminated. You can play it safe and try to stay in the game or you can take risks and try to eliminate other players.
+
+  When everyone except two players are eliminated. The player with the most valueable cards wins.
+
+  But beware! After players draw their Role cards they get powerfull abilities or goals that can even win them the game.
+]

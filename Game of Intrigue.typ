@@ -205,49 +205,7 @@
   dx: -0.5em,
   dy: -5em
 )[
-  #rotate(-skew_angle)[
-    #skew(-skew_angle)[
-      #text(
-        weight: "extrabold",
-        size: 5em,
-        fill: white
-      )[
-        GAME
-        #text(
-          weight: "bold",
-          size: 0.8em
-        )[
-          #h(-0.2em)
-          of
-        ]
-        INTRIGUE
-      ]\
-      #text(
-        weight: "extrabold",
-        size: 2em,
-        fill: white
-      )[
-      a game about\ being an asshole
-      ]
-      #v(2em)
-      #box(
-        width: 150%
-      )[
-        #grid(
-          rows: 1,
-          columns: (1fr) * 7,
-          fill: white,
-        )[
-          #icon("Pact", width: 5em, height: 5em, color: red)
-          #icon("Asset", width: 5em, height: 5em, color: orange)
-          #icon("Influence", width: 5em, height: 5em, color: yellow)
-          #icon("Social", width: 5em, height: 5em, color: green)
-          #icon("Speech", width: 5em, height: 5em, color: blue)
-          #icon("Role", width: 5em, height: 5em, color: purple)
-        ]
-      ]
-    ]
-  ]
+  #logo(banner: true)
 ]
 #pagebreak()
 #text(size: 3em, weight: "bold")[
@@ -261,13 +219,7 @@ Version #version
 = The Game <the_game>
 
 == Outline <outline>
-In the Game of Intrigue, you compete against at least two other players. You draw cards and trade them with other players to gain an advantage.
-
-The most important cards are the Standing cards. If you loose all your Standing cards you are eliminated. You can play it safe and try to stay in the game or you can take risks and try to eliminate other players.
-
-When everyone except two players are eliminated. The player with the most valueable cards wins.
-
-But beware! After players draw their Role cards they get powerfull abilities or goals that can even win them the game.
+#outline_text
 
 == Setup <setup>
 Separate the Standing cards from the rest.\
@@ -479,8 +431,8 @@ Put them back in the box. They are not to be used this game anymore.
       ]
     ]
     #place(
-      dx: 6.17em * card_example_scale,
-      dy: 14.9em * card_example_scale,
+      dx: 6.2em * card_example_scale,
+      dy: 14.85em * card_example_scale,
     )[
       #rotate(-skew_angle)[
         #skew(-skew_angle)[
@@ -506,8 +458,8 @@ Put them back in the box. They are not to be used this game anymore.
       ]
     ]
     #place(
-      dx: 6.17em * card_example_scale,
-      dy: 14.9em * card_example_scale,
+      dx: 6.2em * card_example_scale,
+      dy: 14.85em * card_example_scale,
     )[
       #rotate(-skew_angle)[
         #skew(-skew_angle)[
@@ -544,9 +496,6 @@ Put them back in the box. They are not to be used this game anymore.
     - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))-#(calc.max(..defence_values)))
   ],
   [
-    #let colored_card_count = player_count * ((player_count - 2) + social_cards.len())
-    #let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * testimony_values.len() + rebrand_copy_amount * rebrand_values.len() + defence_copy_amount * defence_values.len()
-    #let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount + standing_card_amount * player_count
     #text[
       Color Tokens: #player_count\
       Roles: #role_card_amount\

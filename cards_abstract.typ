@@ -269,23 +269,10 @@
                   #repeat("GAME OF INTRIGUE")
                   #repeat("OF INTRIGUE GAME")
                   #repeat("INTRIGUE GAME OF")
+                  #repeat("GAME OF INTRIGUE")
                 ]
                 #v(2em, weak: true)
-                #text(
-                  weight: "extrabold",
-                  size: 5em,
-                  fill: if role {black} else {white}
-                )[
-                  GAME
-                  #text(
-                    weight: "bold",
-                    size: 0.8em
-                  )[
-                    #h(-0.2em)
-                    of
-                  ]
-                  INTRIGUE
-                ]
+                #logo_text
                 #v(2em, weak: true)
                 #text(font: "Chivo Mono", fill: secret_gradient)[
                   #repeat("GAME OF INTRIGUE")

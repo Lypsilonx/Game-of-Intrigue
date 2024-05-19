@@ -9,4 +9,5 @@ if os.path.exists(".updateVersion"):
     os.remove(".updateVersion")
 
     #tag the commit
-    os.system(f"git tag -a v{new_version} -m 'Version {new_version}'")
+    # (Doesn't work in combination with GitHub Desktop)
+    # os.system(f"git tag -a v{new_version} -m 'Version {new_version}'")

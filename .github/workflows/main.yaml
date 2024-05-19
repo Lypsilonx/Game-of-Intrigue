@@ -17,9 +17,15 @@ jobs:
             Game of Intrigue.typ
           options: |
             --input=render_type=single
+      - name: Render Box
+        uses: leana8959/typst-action@main
+        with:
+          source_file: |
+            box.typ
       - run: |
           mkdir -p assets
           mv Game\ of\ Intrigue.pdf assets/Game\ of\ Intrigue.pdf
+          mv box.pdf assets/box.pdf
       - name: Render Single
         uses: leana8959/typst-action@main
         with:
