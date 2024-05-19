@@ -64,11 +64,9 @@ for render_type in render_types:
     }
   })
   steps.append({
-    'run': LS("""\
-      mkdir -p assets/cards/""" + render_type + """
-      mv cards.pdf assets/cards/""" + render_type + """/cards.pdf
-      mv cards_abstract.pdf assets/cards/""" + render_type + """/cards_abstract.pdf
-    """)
+    'run': LS("mkdir -p assets/cards/" + render_type + "\n"
+      + '\n'.join(map(lambda x: 'mv ' + x + '.pdf assets/cards/' + render_type + '/' + x + '.pdf', map(lambda x: x.split('.')[0], files)))
+    )
   })
 
 steps.append({
@@ -112,8 +110,6 @@ d = {
 }
 
 yaml = ruamel.yaml.YAML()
-yaml.default_flow_style = False
-yaml.preserve_quotes = True
 yaml.indent(mapping=2, sequence=4, offset=2)
 with open('.github/workflows/main.yaml', 'w') as yaml_file:
   yaml.dump(d, yaml_file)

@@ -28,7 +28,7 @@ jobs:
             cards_abstract.typ
           options: |
             --input=render_type=single
-      - run: |
+      - run: |-
           mkdir -p assets/cards/single
           mv cards.pdf assets/cards/single/cards.pdf
           mv cards_abstract.pdf assets/cards/single/cards_abstract.pdf
@@ -40,7 +40,7 @@ jobs:
             cards_abstract.typ
           options: |
             --input=render_type=single_foldable
-      - run: |
+      - run: |-
           mkdir -p assets/cards/single_foldable
           mv cards.pdf assets/cards/single_foldable/cards.pdf
           mv cards_abstract.pdf assets/cards/single_foldable/cards_abstract.pdf
@@ -52,7 +52,7 @@ jobs:
             cards_abstract.typ
           options: |
             --input=render_type=foldable
-      - run: |
+      - run: |-
           mkdir -p assets/cards/foldable
           mv cards.pdf assets/cards/foldable/cards.pdf
           mv cards_abstract.pdf assets/cards/foldable/cards_abstract.pdf
@@ -64,7 +64,7 @@ jobs:
             cards_abstract.typ
           options: |
             --input=render_type=double_sided
-      - run: |
+      - run: |-
           mkdir -p assets/cards/double_sided
           mv cards.pdf assets/cards/double_sided/cards.pdf
           mv cards_abstract.pdf assets/cards/double_sided/cards_abstract.pdf
