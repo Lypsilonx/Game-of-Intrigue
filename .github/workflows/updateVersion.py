@@ -35,6 +35,11 @@ class Application(ttk.Frame):
         #commit the changes
         os.system("git add data.typ")
 
+        #add temp file to .git/info to signal the version update
+        with open(".updateVersion", "w") as file:
+            file.write(new_version)
+        
+
         # quit the application
         quit()
 
