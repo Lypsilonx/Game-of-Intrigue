@@ -1,4 +1,4 @@
-#let version = "1.0.3"
+#let version = "1.0.4"
 
 // Game settings
 #let colors = (
@@ -154,11 +154,11 @@
   )#h(side_distance)
 ]
 
-#let logo_text = [
+#let logo_text(color: white) = [
   #text(
     weight: "extrabold",
     size: 5em,
-    fill: white
+    fill: color
   )[
     GAME
     #text(
@@ -194,7 +194,7 @@
 #let logo(subtitle: true, banner: false) = [
   #rotate(-skew_angle)[
     #skew(-skew_angle)[
-      #logo_text
+      #logo_text()
       #if subtitle [
         #text(
           weight: "extrabold",

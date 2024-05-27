@@ -272,7 +272,7 @@
                   #repeat("GAME OF INTRIGUE")
                 ]
                 #v(2em, weak: true)
-                #logo_text
+                #logo_text(color: if role {black} else {white})
                 #v(2em, weak: true)
                 #text(font: "Chivo Mono", fill: secret_gradient)[
                   #repeat("GAME OF INTRIGUE")
