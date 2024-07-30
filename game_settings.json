@@ -21,15 +21,11 @@
   "social_cards": [
     {
       "type": "Favour",
-      "value": 2
+      "value": 1
     },
     {
       "type": "Favour",
-      "value": 3
-    },
-    {
-      "type": "Favour",
-      "value": 4,
+      "value": 2,
       "illegal": true
     },
     {
@@ -58,11 +54,7 @@
     },
     {
       "type": "Secret",
-      "value": 3
-    },
-    {
-      "type": "Secret",
-      "value": 4,
+      "value": 3,
       "illegal": true
     }
   ],

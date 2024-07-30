@@ -1,4 +1,4 @@
-#let version = "1.0.4"
+#let version = "1.1.0"
 
 // Game settings
 #let colors = (
@@ -56,13 +56,13 @@
   "Pact": "Symbolizes a pact with the [C] player. Removed from the game when discarded.",
   "Asset": "Worth [X] (Value)",
   "Influence": "Trade openly.\nCannot be declined.",
-  "Favour": "Announce to ask the [C] player for a card. (excluding Standing and Roles)",
+  "Favour": "Announce to ask the [C] player for [X] card_s. (excluding Standing and Roles)",
   "Hook": "Announce to make the [C] player discard 1 Standing.",
   "Threat": "Announce to make the [C] player pay a fine to you.",
   "Secret": "Announce to force the [C] player to tell everyone how many illegal cards they have.",
   "Testimony": "When announced you can discard [X] illegal card_s from your hand.",
   "Rebrand": "When announced you can discard [X] legal card_s from your hand.",
-  "Defence": "When announced you are immune to Threat cards up to a Value of [X].",
+  "Defence": "When announced you are immune to Social cards up to a Value of [X].",
 )
 
 #let goal_hand_size = calc.ceil(hand_card_amount * 1.5)
@@ -72,22 +72,22 @@
   "Broker": "[Goal]Hold " + str(goal_hand_size) + " cards with ascending values.",
   "Hoarder": "[Goal]Hold " + str(calc.ceil(asset_copy_amount * 0.8)) + " Assets with the same value.",
   "Snitch": "[Goal]Hold " + str(calc.floor(goal_hand_size * 1.5)) + " Cards. (excluding Standing)",
-  "Isolationist": "[Goal]Hold only cards without value. (including Standing)",
-  "Tyrant": "[Goal](3-5 Players) Hold 2 Threats for all other players.\n(6-8 Players) Hold Threats for all other players.",
-  "Politician": "[Goal](3-5 Players) Hold 2 Favours for all other players.\n(6-8 Players) Hold Favours for all other players.",
+  "Isolationist": "[Goal]Hold only cards with less than 2 value. (including Standing)",
+  "Tyrant": "[Goal](3 Players) Hold 2 Threats for all other players.\n(4-" + str(player_count) + " Players) Hold Threats for all other players.",
+  "Politician": "[Goal](3 Players) Hold 2 Favours for all other players.\n(4-" + str(player_count) + " Players) Hold Favours for all other players.",
   "Lobbyist": "[Perk]If you trade this card to another player, they have to discard all their Standing.", // TODO: Make it so that people want to trade Role cards
   "Leach": "[Perk]If someone you have a Pact with wins, you win too. When you loose, you can try to sneak this card out of the game, to win later.",
   "Undead": "[Perk]When you loose, take " + str((standing_card_amount - 1)) + " Standing cards from the draw pile and shuffle it again, then remove this card from the game.",
   "Liar": "[Perk]You only loose when being accused during a trade, while having no Standing. You cannot win without Standing.", // TODO: Figure out how to handle this discretely
   "Officer": "[Perk]Announce to force everyone to give you all their illegal cards.",
   "Speculator": "[Perk]At the end of the game each of your Asset cards is worth 5+1d4. (Throw a dice with 4 sides and add 5)",
-  "Salesperson": "[Perk]Announce to discard all your cards (excluding Standing)",
+  "Salesperson": "[Perk]Announce to discard all your cards (excluding Standing and Roles)",
   "Banker": "[Perk]Announce to force everyone to give you all their Assets.",
 )
 
 #let role_card_amount = role_descriptions.len()
 
-#let colored_card_count = player_count * ((player_count - 2) + social_cards.len())
+#let colored_card_count = player_count * (social_cards.len() + 1)
 #let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * testimony_values.len() + rebrand_copy_amount * rebrand_values.len() + defence_copy_amount * defence_values.len()
 #let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount + standing_card_amount * player_count
 
@@ -215,9 +215,9 @@
 #let outline_text = [
   In the Game of Intrigue, you compete against at least two other players. You draw cards and trade them with other players to gain an advantage.
 
-  The most important cards are the Standing cards. If you loose all your Standing cards you are eliminated. You can play it safe and try to stay in the game or you can take risks and try to eliminate other players.
+  Everyone has their own Goal that wins them the game, but the most important cards are the Standing cards. If you loose all your Standing cards you are eliminated. You can play it safe, scheme to fulfill your personal Goal or take risks and try to eliminate other players.
 
   When everyone except two players are eliminated. The player with the most valueable cards wins.
 
-  But beware! After players draw their Role cards they get powerfull abilities or goals that can even win them the game.
+  But beware! After players draw their Perk cards they get powerfull abilities.
 ]

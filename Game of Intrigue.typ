@@ -64,7 +64,7 @@
             } else {
               place(left, counter(page).display("1"));
             }
-          place(center, [Game of Intrigue])
+          place(center, [Game of Intrigue #text(size:0.6em)[#version]])
         }
       }
     )
@@ -79,6 +79,16 @@
 #show regex("Role(s)?( card(s)?)?"): it => {
   set text(weight: "bold")
   link(<role>, [#icon("Role")#it])
+}
+
+#show regex("Goal(s)?( card(s)?)?"): it => {
+  set text(weight: "bold")
+  link(<goals>, [#icon("Role")#it])
+}
+
+#show regex("Perk(s)?( card(s)?)?"): it => {
+  set text(weight: "bold")
+  link(<perks>, [#icon("Role")#it])
 }
 
 #show regex("Pact(s)?( card(s)?)?"): it => {
@@ -101,7 +111,7 @@
   link(<social>, [#icon("Social", color: gray)#it])
 }
 
-#show regex("(Favour)( card(s)?)?"): it => {
+#show regex("(Favour(s)?)( card(s)?)?"): it => {
   set text(weight: "bold")
   link(<social>, [#icon("Favour", color: gray)#it])
 }
@@ -111,7 +121,7 @@
   link(<social>, [#icon("Hook", color: gray)#it])
 }
 
-#show regex("(Threat)( card(s)?)?"): it => {
+#show regex("(Threat(s)?)( card(s)?)?"): it => {
   set text(weight: "bold")
   link(<social>, [#icon("Threat", color: gray)#it])
 }
@@ -181,7 +191,7 @@
   link(<visible_on_back>, it)
 }
 
-#show regex("(P|p)ay a fine"): it => {
+#show regex("(P|p)a(y|id)( as)? a fine"): it => {
   set text(weight: "bold")
   link(<fine>, it)
 }
@@ -191,7 +201,7 @@
   link(<announcement>, it)
 }
 
-#show regex("remove.*from the game"): it => {
+#show regex("(R|r)emove.*from the game"): it => {
   set text(weight: "bold")
   link(<removed_from_game>, it)
 }
@@ -230,13 +240,12 @@ Sort them by Color and give each player one of the piles.\
 The Color Token is put on the table in front of the player visible to everyone. Each player then shuffles their Colored cards and puts them face down in their personal pile.\
 The remaining Colored cards are removed from the game.\
 
-The Role cards are shuffled and each player is dealt one to the *bottom* of their personal pile.\
+The Role cards are seperated into Goals and Perks and shuffled. Each player is dealt a Goal (into their hand) and a Perk to the *bottom* of their personal pile.\
 The rest of the Role cards are removed from the game.
 
 Mix the rest of the cards into the draw pile. Each player can now draw a total
-of #hand_card_amount cards from the draw pile or their personal pile or a mix of both (e.g. #(calc.ceil(hand_card_amount / 3 * 2)) from the draw pile and #(calc.floor(hand_card_amount / 3)) from the personal pile) abd put them in their hand with their Standing cards.
+of #(hand_card_amount - 1) cards from the draw pile or their personal pile or a mix of both (e.g. #(calc.ceil((hand_card_amount - 1) / 3 * 2)) from the draw pile and #(calc.floor((hand_card_amount - 1) / 3)) from the personal pile) and put them in their hand with their Standing cards and their Role.
 
-#pagebreak()
 == Phases <phases>
 The game is played in rounds, that are split up into phases. All players collectively decide when to move on to the next phase together.
 You can decide on a turn order inside of the phases (like clockwise or counter-clockwise) or spontaneously decide who goes next. After the last phase the next round starts.
@@ -249,17 +258,17 @@ Players can openly or secretly (in another room or with paper notes or via messe
 Lying and manipulation are allowed
 === Trade <trade>
 Each player now gets *one* Chance to Trade *one card* with a player of their choosing.
-You will have to trade to participate in the Announcement and Draw phase. So even just trading for the sake of it can be a good strategy. *Bluffing is allowed!*
+You will have to trade to participate in the Announcement phase. So even just trading for the sake of it can be a good strategy. *Bluffing is allowed!*
 
 A trade happens between two players:
   1. Player 1 offers a card to Player 2 by openly stating the card and the player they want to trade with (can be a bluff)
   2. Player 2 decides if they want to trade. If they do they offer a card to Player 1 (also openly stating which card; can also be a bluff)
   3. Player 1 decides if they want to trade
-  3. If any player wants to object to the trade they can now do so. Upon an accusation the legality of the traded cards is checked (see Legality check)
+  3. If any player wants to object to the trade they can now do so. (Count down from 3 to give other players a chance; The deal is done/protected on the count of 0) Upon an accusation the legality of the traded cards is checked (see Legality check)
   4. If both parties decided to trade (and no illegal cards were found in the previous step) they each take the card offered to them.
-  5. Both players now qualify for the following phases.
-#pagebreak()
-Example:
+  5. Both players now qualify for the Announcement phase.
+
+_Example:_
 
 #show regex("C[0-9]\([a-zA-Z ]*\)"): it => {
   set text(fill: colors.at(int(it.text.at(1))))
@@ -278,6 +287,7 @@ Example:
 - C0(Max) announces they want to trade an Col1 Favour with C4(Rue)
 - C4(Rue) accepts and offers an Asset card (Value 8) to C0(Max)
 - C0(Max) accepts the trade
+- C0(Max) and C4(Rue) count down from 3
 - C1(Alex) objects to the trade because they are Col1 and know they haven't pulled any Favour cards from their personal pile yet, so it must be a bluff. They also know from a previous Secret card that C0(Max) has a lot of illegal cards in their hand.
 - The legality of the trade is checked
   - No illegal cards were traded
@@ -285,28 +295,25 @@ Example:
 - C4(Rue) draws a card from C1(Alex)'s hand
 - C0(Max) gives C4(Rue) a Testimony card (Value 2) _secretly_
 - C4(Rue) gives C0(Max) a Col4 Favour card (Value 3) _secretly_
-- C0(Max) and C4(Rue) now qualify for the Announcement and Draw phase
+- C0(Max) and C4(Rue) now qualify for the Announcement phase
 - C1(Alex) and the other players can still trade with each other
 
 === Announcement <announcement>
-_Only after a successful trade can a player participate in the Announcement and Draw phase._
+_Only after a successful trade can a player participate in this phase._
 
 In the Announcement phase players can announce Social and Speech cards.\
 
 1. Each qualifying player puts one card face down in front of them
 2. If anyone wants to announce their card they turn it around for everyone to see
-3. Announcements get resolved (See Social cards and Speech cards)
+3. Announcements get resolved (See Social cards and Speech cards) in the order of highest to lowest value (same values get sorted by a coin toss or rock, paper scissors). 
 4. All the cards in front of the players get put on the discard pile
 #pagebreak()
 === Draw <draw>
-_Only for players that successfully traded in the Trade phase and announced in the Announcement phase_
-
-Each player draws cards from the draw pile or their personal pile until they have #(hand_card_amount + standing_card_amount) cards in their hand.\
+Each player discards (another) one card from their hand and draws cards from the draw pile or their personal pile until they have #(hand_card_amount + standing_card_amount) cards in their hand.\
 
 If the draw pile is empty mix the discard pile into it
 
-If a player has 0 Standing they *loose* and have to decide where they want to
-put their cards:
+If a player has 0 Standing they *loose* and have to decide where they want to put their cards:
 - on the discard pile
 - into a player hand (inheritance)
   - the chosen player must discard the amount of cards they received
@@ -328,8 +335,8 @@ You loose when all your Standing is lost.
 _Colored_\
 _Can be Illegal_\
 
-This card symbolizes a pact between you and another player.\
-It can only be traded for another Pact card and only you can trade with your Pact card. When discarded it is removed from the game.
+This card symbolizes a pact between you and another player. Other players Pacts are placed openly next to your Color Token on the table after you receive them.\
+It can only be traded for another Pact card and only you can trade with your Pact card. When discarded or paid as a fine it is removed from the game.
 
 If you have someone else's Pact card you cannot:
 - use a Social card on them
@@ -396,11 +403,9 @@ If no card is illegal:
   2. The trade goes on.
 #pagebreak()
 == Paying a fine <fine>
-You have to let the other player draw a card from your hand or personal pile.
-You can choose to protect either #standing_card_amount cards from your hand (by
-putting them aside) or your personal pile from being drawn from. If you have
-less than #standing_card_amount cards in your hand, you cannot protect any
-cards. If a Pact is drawn it is removed from the game.
+You have to let the other player draw a card from your hand or personal pile.\
+You can choose to protect up to #standing_card_amount cards from your hand (put them aside) or your personal pile (hold a hand over it) from being drawn from. If you have less than #standing_card_amount cards in your hand and your personal pile is empty, you cannot protect any cards.\
+If a Pact is drawn it is removed from the game.
 
 == Removed from the game <removed_from_game>
 Put them back in the box. They are not to be used this game anymore.
@@ -472,49 +477,103 @@ Put them back in the box. They are not to be used this game anymore.
   [No Value, Legal]
 )
 #pagebreak()
+= Bonus Rules <bonus_rules>
+
+== Investments
+An investment phase is added before the Trade phase.\
+Each player can put any amount of cards from their hand into an investments pile. Cards on this pile cannot be played and are openly visible for anyone. They still count towards the players hand size limit, but not towards the value at the end of the game.\
+=== Investment Boni
+You get the following bonus per 10 total Value put into the investments pile:\
+  _Either (Decide this for the whole game in advance)_\
+  Hand size +1\
+  _Or_\
+  Announce +1 card\
+  _Or_\
+  Add 1 value to your announced card
+
+=== Investment Resolution
+The player with the most total Value in the investments pile is the Auctioneer.\
+They get to decide over ties and the turn order.
+
+== Bribery
+When you have to pay a fine you can discard cards with the total value of _the value of the illegal card you were fined for + 1_.\
+You cannot dicard cards without value.
+
+== Who wants to be a Millionaire?
+Remove the Banker Role from the game.\
+Anyone can win by holding cards worth more or equal to #(calc.floor(int(goal_hand_size * ((asset_value_range.at(1) + asset_value_range.at(0)) / 2) / 10) * 15)).
+
+== Liar, Liar
+Remove the Liar Role from the game. It applies to all players.\
+You start with #(standing_card_amount - 1) Standing.
+
+#pagebreak()
 = Material <material>
+== Cards <cards>
 #linebreak()
-#set par(leading: 1em)
-#grid(
-  columns: 2,
-  gutter: 1em,
-  [
-    - #player_count Color Tokens
-    - #role_card_amount x Role
-    - #player_count x #standing_card_amount Standing (#standing_card_value)
-    - Each Color (#player_count times):\
-      - 1 x Pact
-      - #(player_count - 3) x Pact (illegal)
-      #for card_data in social_cards {
-        [- 1 x #(card_data.type) (#(card_data.value)#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
-      }
-    - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1))  Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)))
-    - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)), illegal)
-    - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1)))
-    - #(testimony_copy_amount * testimony_values.len()) x Testimony (#(calc.min(..testimony_values))-#(calc.max(..testimony_values)))
-    - #(rebrand_copy_amount * rebrand_values.len()) x Rebrand (#(calc.min(..rebrand_values))-#(calc.max(..rebrand_values)))
-    - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))-#(calc.max(..defence_values)))
-  ],
-  [
-    #text[
-      Color Tokens: #player_count\
-      Roles: #role_card_amount\
-      Standing: #(standing_card_amount * player_count)\
-      #linebreak()
-      #for _ in range(social_cards.len()) {
-        linebreak()
-      }
-      Colored cards: #(colored_card_count/player_count) per player\ ( = #colored_card_count)\
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      #linebreak()
-      Non-colored cards: #non_colored_card_count\
-      #line()
-      Total cards: #card_count
+#par(leading: 1em)[
+  #grid(
+    columns: 2,
+    gutter: 1em,
+    [
+      - #player_count Color Tokens
+      - #role_card_amount x Role
+      - #player_count x #standing_card_amount Standing (#standing_card_value)
+      - Each Color (#player_count times):\
+        - 1 x Pact
+        #for card_data in social_cards {
+          [- 1 x #(card_data.type) (#(card_data.value)#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
+        }
+      - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1))  Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)))
+      - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)), illegal)
+      - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1)))
+      - #(testimony_copy_amount * testimony_values.len()) x Testimony (#(calc.min(..testimony_values))-#(calc.max(..testimony_values)))
+      - #(rebrand_copy_amount * rebrand_values.len()) x Rebrand (#(calc.min(..rebrand_values))-#(calc.max(..rebrand_values)))
+      - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))-#(calc.max(..defence_values)))
+    ],
+    [
+      #text[
+        Color Tokens: #player_count\
+        Roles: #role_card_amount\
+        Standing: #(standing_card_amount * player_count)\
+        #linebreak()
+        #for _ in range(social_cards.len()) {
+          linebreak()
+        }
+        Colored cards: #(colored_card_count/player_count) per player\ ( = #colored_card_count)\
+        #linebreak()
+        #linebreak()
+        #linebreak()
+        #linebreak()
+        Non-colored cards: #non_colored_card_count\
+        #line()
+        Total cards: #card_count
+      ]
     ]
-  ]
-)
+  )
+]
 #pagebreak()
 
+#let roles = for role in role_descriptions {
+    (
+      role.at(0),
+      role.at(1).replace("[Goal]", "").replace("[Perk]", "")
+    )
+  }.flatten()
+
+#let goals = roles.chunks(int(roles.len() / 2)).at(0)
+#let perks = roles.chunks(int(roles.len() / 2)).at(1)
+
+== Roles <roles>
+=== Goals <goals>
+#table(
+  columns: 2,
+  ..goals
+)
+#pagebreak()
+=== Perks <perks>
+#table(
+  columns: 2,
+  ..perks
+)
+#pagebreak()

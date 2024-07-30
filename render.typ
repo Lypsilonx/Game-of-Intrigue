@@ -101,10 +101,6 @@
     card_backs.push(render_card_back())
     cards.push(render_card("Pact", color: color))
     card_backs.push(render_card_back())
-    for _ in range(player_count - 3) {
-      cards.push(render_card("Pact", color: color, illegal: true))
-      card_backs.push(render_card_back(illegal: true))
-    }
 
     for card_data in social_cards {
       cards.push(render_card(card_data.type, value: card_data.value, color: color, illegal: if card_data.keys().contains("illegal") {card_data.illegal} else {false}, supertitle: "Social"))
