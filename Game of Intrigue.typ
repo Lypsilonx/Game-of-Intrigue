@@ -252,12 +252,10 @@ You can decide on a turn order inside of the phases (like clockwise or counter-c
 
 The phases are:
 
-=== Discussion <discussion>
-Players can openly or secretly (in another room or with paper notes or via messenger etc.) discuss the following round or future strategies.
-
-Lying and manipulation are allowed
 === Trade <trade>
-Each player now gets *one* Chance to Trade *one card* with a player of their choosing.
+Players can openly or secretly (in another room or with paper notes or via messenger etc.) discuss strategies.
+
+Each player gets *one* Chance to Trade *one card* with a player of their choosing.
 You will have to trade to participate in the Announcement phase. So even just trading for the sake of it can be a good strategy. *Bluffing is allowed!*
 
 A trade happens between two players:
@@ -267,6 +265,8 @@ A trade happens between two players:
   3. If any player wants to object to the trade they can now do so. (Count down from 3 to give other players a chance; The deal is done/protected on the count of 0) Upon an accusation the legality of the traded cards is checked (see Legality check)
   4. If both parties decided to trade (and no illegal cards were found in the previous step) they each take the card offered to them.
   5. Both players now qualify for the Announcement phase.
+
+After everyone (except one player, if there is an uneven number of players) has traded the phase ends.
 
 _Example:_
 

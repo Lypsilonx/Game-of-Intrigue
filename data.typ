@@ -1,4 +1,4 @@
-#let version = "1.1.0"
+#let version = "1.1.1"
 
 // Game settings
 #let colors = (
