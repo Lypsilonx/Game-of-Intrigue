@@ -137,11 +137,9 @@
       card_backs.push(render_card_back(value: value))
     }
   }
-  for value in defence_values {
-    for _ in range(defence_copy_amount) {
-      cards.push(render_card("Defence", value: value, supertitle: "Speech"))
-      card_backs.push(render_card_back(value: value))
-    }
+  for _ in range(defence_copy_amount) {
+    cards.push(render_card("Defence", value: defence_value, supertitle: "Speech"))
+    card_backs.push(render_card_back(value: defence_value))
   }
   for role in role_descriptions.keys() {
     cards.push(render_card(role, supertitle: "Role"))

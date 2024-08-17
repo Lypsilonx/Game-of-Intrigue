@@ -1,6 +1,6 @@
 {
-  "hand_card_amount": 5,
-  "standing_card_amount": 3,
+  "hand_card_amount": 8,
+  "standing_card_amount": 2,
   "standing_card_value": 10,
 
   "asset_copy_amount": 10,
@@ -15,8 +15,8 @@
   "rebrand_copy_amount": 2,
   "rebrand_values": [1, 1, 2, 3],
 
-  "defence_copy_amount": 2,
-  "defence_values": [2, 2, 3, 4],
+  "defence_copy_amount": 8,
+  "defence_value": 4,
 
   "social_cards": [
     {

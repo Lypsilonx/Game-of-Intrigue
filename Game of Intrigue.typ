@@ -243,8 +243,9 @@ The remaining Colored cards are removed from the game.\
 The Role cards are seperated into Goals and Perks and shuffled. Each player is dealt a Goal (into their hand) and a Perk to the *bottom* of their personal pile.\
 The rest of the Role cards are removed from the game.
 
+#let start_draw_cards = hand_card_amount - standing_card_amount - 1
 Mix the rest of the cards into the draw pile. Each player can now draw a total
-of #(hand_card_amount - 1) cards from the draw pile or their personal pile or a mix of both (e.g. #(calc.ceil((hand_card_amount - 1) / 3 * 2)) from the draw pile and #(calc.floor((hand_card_amount - 1) / 3)) from the personal pile) and put them in their hand with their Standing cards and their Role.
+of #start_draw_cards cards from the draw pile or their personal pile or a mix of both (e.g. #(calc.ceil(start_draw_cards / 3 * 2)) from the draw pile and #(calc.floor(start_draw_cards / 3)) from the personal pile) and put them in their hand with their Standing cards and their Role.
 
 == Phases <phases>
 The game is played in rounds, that are split up into phases. All players collectively decide when to move on to the next phase together.
@@ -303,13 +304,13 @@ _Only after a successful trade can a player participate in this phase._
 
 In the Announcement phase players can announce Social and Speech cards.\
 
-1. Each qualifying player puts one card face down in front of them
+1. Each qualifying player can now put one card face down in front of them
 2. If anyone wants to announce their card they turn it around for everyone to see
-3. Announcements get resolved (See Social cards and Speech cards) in the order of highest to lowest value (same values get sorted by a coin toss or rock, paper scissors). 
+3. Announcements get resolved (See Social cards and Speech cards) in the order of highest to lowest value (same values get sorted by a coin toss or rock, paper scissors). You cannot announce a Social card of your own Color.
 4. All the cards in front of the players get put on the discard pile
 #pagebreak()
 === Draw <draw>
-Each player discards (another) one card from their hand and draws cards from the draw pile or their personal pile until they have #(hand_card_amount + standing_card_amount) cards in their hand.\
+Each player can now discard (another) one card from their hand and draws cards from the draw pile or their personal pile until they have #hand_card_amount cards in their hand.\
 
 If the draw pile is empty mix the discard pile into it
 
@@ -352,7 +353,7 @@ Assets are worth their value. Thy do not have any special abilities.
 _Can be Illegal_\
 _Value #(influence_value_range.at(0))-#(influence_value_range.at(1))_
 
-Influence cards must be traded openly and cannot be declined.
+Influence cards are played during the Trade phase to make another player trade with you.
 
 #pagebreak()
 === Social <social>
@@ -524,12 +525,12 @@ You start with #(standing_card_amount - 1) Standing.
         #for card_data in social_cards {
           [- 1 x #(card_data.type) (#(card_data.value)#if (card_data.keys().contains("illegal") and card_data.illegal) {", illegal"})]
         }
-      - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1))  Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)))
+      - #(calc.ceil(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)))
       - #(calc.floor(asset_copy_amount / 2) * (asset_value_range.at(1) - asset_value_range.at(0) + 1)) x Asset (#(asset_value_range.at(0))-#(asset_value_range.at(1)), illegal)
       - #(influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1)) x Influence (#(influence_value_range.at(0))-#(influence_value_range.at(1)))
       - #(testimony_copy_amount * testimony_values.len()) x Testimony (#(calc.min(..testimony_values))-#(calc.max(..testimony_values)))
       - #(rebrand_copy_amount * rebrand_values.len()) x Rebrand (#(calc.min(..rebrand_values))-#(calc.max(..rebrand_values)))
-      - #(defence_copy_amount * defence_values.len()) x Defence (#(calc.min(..defence_values))-#(calc.max(..defence_values)))
+      - #(defence_copy_amount) x Defence (#defence_value)
     ],
     [
       #text[

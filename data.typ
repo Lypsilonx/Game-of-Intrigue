@@ -1,4 +1,4 @@
-#let version = "1.1.1"
+#let version = "1.2.0"
 
 // Game settings
 #let colors = (
@@ -38,7 +38,7 @@
 #let rebrand_values = settings_json.rebrand_values
 
 #let defence_copy_amount = settings_json.defence_copy_amount
-#let defence_values = settings_json.defence_values
+#let defence_value = settings_json.defence_value
 
 #let social_cards = settings_json.social_cards
 
@@ -55,27 +55,27 @@
   "Standing": "If you loose all of these cards, you are eliminated.",
   "Pact": "Symbolizes a pact with the [C] player. Removed from the game when discarded.",
   "Asset": "Worth [X] (Value)",
-  "Influence": "Trade openly.\nCannot be declined.",
+  "Influence": "Make someone trade with you in the trade phase.",
   "Favour": "Announce to ask the [C] player for [X] card_s. (excluding Standing and Roles)",
   "Hook": "Announce to make the [C] player discard 1 Standing.",
   "Threat": "Announce to make the [C] player pay a fine to you.",
   "Secret": "Announce to force the [C] player to tell everyone how many illegal cards they have.",
   "Testimony": "When announced you can discard [X] illegal card_s from your hand.",
   "Rebrand": "When announced you can discard [X] legal card_s from your hand.",
-  "Defence": "When announced you are immune to Social cards up to a Value of [X].",
+  "Defence": "When announced you are immune to all Social cards.",
 )
 
-#let goal_hand_size = calc.ceil(hand_card_amount * 1.5)
+#let goal_hand_size = calc.ceil(hand_card_amount * 0.8)
 #let role_descriptions = (
   "Millionaire": "[Goal]Hold cards worth more or equal to " + str(calc.floor(int(goal_hand_size * ((asset_value_range.at(1) + asset_value_range.at(0)) / 2) / 10) * 10)) + ". (excluding Standing)",
   "Mafioso": "[Goal]Hold more or equal to " + str(goal_hand_size) + " illegal cards, but only illegal cards. (excluding Standing and cards of your Color)",
   "Broker": "[Goal]Hold " + str(goal_hand_size) + " cards with ascending values.",
-  "Hoarder": "[Goal]Hold " + str(calc.ceil(asset_copy_amount * 0.8)) + " Assets with the same value.",
-  "Snitch": "[Goal]Hold " + str(calc.floor(goal_hand_size * 1.5)) + " Cards. (excluding Standing)",
+  "Hoarder": "[Goal]Hold " + str(calc.ceil(asset_copy_amount * 0.6)) + " Assets with the same value.",
+  "Snitch": "[Goal]Hold " + str(calc.floor(hand_card_amount * 1.5)) + " Cards. (excluding Standing)",
   "Isolationist": "[Goal]Hold only cards with less than 2 value. (including Standing)",
   "Tyrant": "[Goal](3 Players) Hold 2 Threats for all other players.\n(4-" + str(player_count) + " Players) Hold Threats for all other players.",
   "Politician": "[Goal](3 Players) Hold 2 Favours for all other players.\n(4-" + str(player_count) + " Players) Hold Favours for all other players.",
-  "Lobbyist": "[Perk]If you trade this card to another player, they have to discard all their Standing.", // TODO: Make it so that people want to trade Role cards
+  "Lobbyist": "[Perk]If you trade this card to another player, they have to discard all their Standing.",
   "Leach": "[Perk]If someone you have a Pact with wins, you win too. When you loose, you can try to sneak this card out of the game, to win later.",
   "Undead": "[Perk]When you loose, take " + str((standing_card_amount - 1)) + " Standing cards from the draw pile and shuffle it again, then remove this card from the game.",
   "Liar": "[Perk]You only loose when being accused during a trade, while having no Standing. You cannot win without Standing.", // TODO: Figure out how to handle this discretely
@@ -88,7 +88,7 @@
 #let role_card_amount = role_descriptions.len()
 
 #let colored_card_count = player_count * (social_cards.len() + 1)
-#let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * testimony_values.len() + rebrand_copy_amount * rebrand_values.len() + defence_copy_amount * defence_values.len()
+#let non_colored_card_count = asset_copy_amount * (asset_value_range.at(1) - asset_value_range.at(0) + 1) + influence_copy_amount * (influence_value_range.at(1) - influence_value_range.at(0) + 1) + testimony_copy_amount * testimony_values.len() + rebrand_copy_amount * rebrand_values.len() + defence_copy_amount
 #let card_count = colored_card_count + non_colored_card_count + player_count + role_card_amount + standing_card_amount * player_count
 
 #let symbols = (
