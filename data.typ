@@ -1,4 +1,4 @@
-#let version = "1.2.0"
+#let version = "1.2.1"
 
 // Game settings
 #let colors = (
@@ -65,16 +65,16 @@
   "Defence": "When announced you are immune to all Social cards.",
 )
 
-#let goal_hand_size = calc.ceil(hand_card_amount * 0.8)
+#let goal_hand_size = hand_card_amount - 2
 #let role_descriptions = (
   "Millionaire": "[Goal]Hold cards worth more or equal to " + str(calc.floor(int(goal_hand_size * ((asset_value_range.at(1) + asset_value_range.at(0)) / 2) / 10) * 10)) + ". (excluding Standing)",
   "Mafioso": "[Goal]Hold more or equal to " + str(goal_hand_size) + " illegal cards, but only illegal cards. (excluding Standing and cards of your Color)",
-  "Broker": "[Goal]Hold " + str(goal_hand_size) + " cards with ascending values.",
+  "Broker": "[Goal]Hold " + str(goal_hand_size + 1) + " cards with ascending values.",
   "Hoarder": "[Goal]Hold " + str(calc.ceil(asset_copy_amount * 0.6)) + " Assets with the same value.",
   "Snitch": "[Goal]Hold " + str(calc.floor(hand_card_amount * 1.5)) + " Cards. (excluding Standing)",
   "Isolationist": "[Goal]Hold only cards with less than 2 value. (including Standing)",
-  "Tyrant": "[Goal](3 Players) Hold 2 Threats for all other players.\n(4-" + str(player_count) + " Players) Hold Threats for all other players.",
-  "Politician": "[Goal](3 Players) Hold 2 Favours for all other players.\n(4-" + str(player_count) + " Players) Hold Favours for all other players.",
+  "Tyrant": "[Goal]Hold an evil Social card\n(Threat |Hook )\nfor all other players.\n(3 Players: Hold 2)",
+  "Politician": "[Goal]Hold a calm Social card\n(Favour |Secret )\nfor all other players.\n(3 Players: Hold 2)",
   "Lobbyist": "[Perk]If you trade this card to another player, they have to discard all their Standing.",
   "Leach": "[Perk]If someone you have a Pact with wins, you win too. When you loose, you can try to sneak this card out of the game, to win later.",
   "Undead": "[Perk]When you loose, take " + str((standing_card_amount - 1)) + " Standing cards from the draw pile and shuffle it again, then remove this card from the game.",

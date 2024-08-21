@@ -237,7 +237,8 @@ Each player gets #standing_card_amount Standing cards. The rest are removed from
 
 Separate the Colored cards from the rest.\
 Sort them by Color and give each player one of the piles.\
-The Color Token is put on the table in front of the player visible to everyone. Each player then shuffles their Colored cards and puts them face down in their personal pile.\
+The Color Token and the Pact card are put on the table in front of the player visible to everyone.\
+Each player then shuffles their Colored cards and puts them face down in their personal pile.\
 The remaining Colored cards are removed from the game.\
 
 The Role cards are seperated into Goals and Perks and shuffled. Each player is dealt a Goal (into their hand) and a Perk to the *bottom* of their personal pile.\
@@ -336,8 +337,8 @@ You loose when all your Standing is lost.
 _Colored_\
 _Can be Illegal_\
 
-This card symbolizes a pact between you and another player. Other players Pacts are placed openly next to your Color Token on the table after you receive them.\
-It can only be traded for another Pact card and only you can trade with your Pact card. When discarded or paid as a fine it is removed from the game.
+This card symbolizes a pact between you and another player. Pacts are placed openly next to your Color Token on the table.\
+They can only be traded for another Pact card and only you can trade with your Pact card.
 
 If you have someone else's Pact card you cannot:
 - use a Social card on them
@@ -397,16 +398,14 @@ When a player objects to a trade the legality of the traded cards is checked. Yo
 
 If any traded card is illegal:
   1. The player offering an illegal card will have to pay a fine to the accuser.
-  2. If any illegal Pacts were found to be offered remove them from the game. (Tipp: Pacts are the only illegal cards without a value)
-  3. The trade does not happen; Everyone keeps their offered cards
+  2. The trade does not happen; Everyone keeps their offered cards
 If no card is illegal:
   1. The accusing player will have to pay a fine to one of the trading players (accusors choice)
   2. The trade goes on.
 #pagebreak()
 == Paying a fine <fine>
 You have to let the other player draw a card from your hand or personal pile.\
-You can choose to protect up to #standing_card_amount cards from your hand (put them aside) or your personal pile (hold a hand over it) from being drawn from. If you have less than #standing_card_amount cards in your hand and your personal pile is empty, you cannot protect any cards.\
-If a Pact is drawn it is removed from the game.
+You can choose to protect up to #standing_card_amount cards from your hand (put them aside) or your personal pile (hold a hand over it) from being drawn from. If you have less than #standing_card_amount cards in your hand and your personal pile is empty, you cannot protect any cards.
 
 == Removed from the game <removed_from_game>
 Put them back in the box. They are not to be used this game anymore.
@@ -486,11 +485,7 @@ Each player can put any amount of cards from their hand into an investments pile
 === Investment Boni
 You get the following bonus per 10 total Value put into the investments pile:\
   _Either (Decide this for the whole game in advance)_\
-  Hand size +1\
-  _Or_\
-  Announce +1 card\
-  _Or_\
-  Add 1 value to your announced card
+  Hand size +1 _Or_ Announce +1 card _Or_ Add 1 value to your announced card
 
 === Investment Resolution
 The player with the most total Value in the investments pile is the Auctioneer.\
@@ -507,6 +502,10 @@ Anyone can win by holding cards worth more or equal to #(calc.floor(int(goal_han
 == Liar, Liar
 Remove the Liar Role from the game. It applies to all players.\
 You start with #(standing_card_amount - 1) Standing.
+
+== Co-op
+Remove the Leach Role from the game.\
+Players, that have a pact together, win together.
 
 #pagebreak()
 = Material <material>
